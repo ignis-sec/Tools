@@ -26,15 +26,16 @@ int main(int argc, char* argv)
 	{
 		logfile << "Cannot open driver.txt, shutting down.";
 		cout << "Cannot open driver.txt, shutting down.";
+		return 0;
 	}
 	
 	while (getline(driverDetails,line))												//search for  "Hosted network supported  : Yes"
 	{
-		if (line.compare("    Hosted network supported  : Yes") == 0) cout << "Mobile Hotspot is supported.Continuing with mobile hotspot.\n";
-		if (line.find("Driver") == 1) 
+		if (line.compare("    Hosted network supported  : Yes") == 0) cout << "Mobile Hotspot is supported. Continuing with mobile hotspot.\n";
+		if (line.find("Driver",6)==1)
 		{ 
-			line.substr(sizeof("Driver                    :")); 
-			cardName.append(line); 
+			line.substr(28); 
+			//cardName.append(line); 
 		}
 		bool bCanStart = true;
 	}

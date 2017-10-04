@@ -122,6 +122,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ErrorLib.h" />
+    <ClInclude Include="resource1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PC hotspot1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Wifi_Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
