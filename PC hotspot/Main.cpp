@@ -1,38 +1,38 @@
 #include <string>																	//includes
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <stdexcept>
+
+
 
 using namespace std;																//namespace
 
 int main(int argc, char* argv)
 {
+	string line;																	//variables
+	bool bCanStart=false;
+
+
 	ofstream logfile;																//create log file for error debugging.
 	cout << "Creating log file at errors.log...\n";
 	logfile.open("errors.log");
 	
-	cout << "Extracting Driver Details to driver.cfg...\n";							//get driver details to check hotspot validity.
-	system("netsh wlan show drivers > driver.cfg");
+	cout << "Extracting Driver Details to driver.txt...\n";							//get driver details to check hotspot validity.
+	system("netsh wlan show drivers > driver.txt");
 	
-	ofstream driverDetails;															//read driver.txt
-	driverDetails.open("driver.cfg");
+	ifstream driverDetails;															//read driver.txt
+	driverDetails.open("driver.txt");
 	if (!driverDetails) 
 	{
-		logfile.write("Cannot open driver.cfg");
-		cout << "Cannot open driver.cfg, shutting down.";
+		logfile << "Cannot open driver.txt, shutting down.";
+		cout << "Cannot open driver.txt, shutting down.";
 	}
 	
-/*
-	string line;																	//search for  "Hosted network supported  : Yes"
-	unsigned int curLine = 0;
-	while (istream::getline(driverDetails,line)) { 
-		curLine++;
-		if (line.find(search, 0) != string::npos) {
-			cout << "found: " << search << "line: " << curLine << endl;
-		}
+	while (getline(driverDetails,line))												//search for  "Hosted network supported  : Yes"
+	{
+		if (line.compare("    Hosted network supported  : Yes") == 0) cout << "Mobile Hotspot is supported.Continuing with mobile hotspot.\n";
+		bool bCanStart = true;
 	}
-	*/
+
 
 	return 0;
 }
