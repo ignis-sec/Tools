@@ -9,6 +9,7 @@ using namespace std;																//namespace
 int main(int argc, char* argv)
 {
 	string line;																	//variables
+	string cardName;
 	bool bCanStart=false;
 
 
@@ -30,9 +31,14 @@ int main(int argc, char* argv)
 	while (getline(driverDetails,line))												//search for  "Hosted network supported  : Yes"
 	{
 		if (line.compare("    Hosted network supported  : Yes") == 0) cout << "Mobile Hotspot is supported.Continuing with mobile hotspot.\n";
+		if (line.find("Driver") == 1) 
+		{ 
+			line.substr(sizeof("Driver                    :")); 
+			cardName.append(line); 
+		}
 		bool bCanStart = true;
 	}
-
+	cout << "Wireless card name:" << cardName <<'\n';
 
 	return 0;
 }
