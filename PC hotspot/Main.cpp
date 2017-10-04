@@ -55,7 +55,7 @@ int main(int argc, char* argv)
 		{
 			cardName.append(line);
 		}
-		
+		//driverDetails.close();
 	}
 	if (!bCanStart)																	//if cant start
 	{
@@ -65,7 +65,7 @@ int main(int argc, char* argv)
 	}
 	Sleep(1000);
 	draw_Menu();
-
+	logfile.close();
 	return 0;
 }
 
@@ -81,12 +81,14 @@ bool draw_Menu()
 		menu = _getch();
 
 		if (menu == 80&&((lastMenu == 49) || (lastMenu == 50))) menu=lastMenu+1; if (menu == 72&&((lastMenu == 50) || (lastMenu == 51))) menu = lastMenu - 1;							//arrow keys
-		if (menu < 55) lastMenu = menu; else menu = lastMenu;
-		system("cls");
 		if (menu == 13)
 		{
 			submit_menu(lastMenu);														//submit last menu item
-		}else Menu_Colors(menu);
+			Menu_Colors('2');
+		}
+		if (menu < 55) lastMenu = menu; else menu = lastMenu;
+		system("cls");
+		Menu_Colors(menu);
 	}
 
 }
@@ -172,7 +174,62 @@ void Menu_Colors(int hover)
 void submit_menu(int menu)
 {
 	fstream passwordfile;															//open file to read/write last used password and id to remember
-	passwordfile.open("SSID_Password.txt");
+	ofstream clearcontent;
+	passwordfile.open("SSID_Password.txt",3);
+	string ssid;
+	string password;
+	string line2;
+	string command = "netsh wlan set hostednetwork mode = allow ssid = ";
 
-	case (menu)
+	bool bEmpty = true;
+	while (getline(passwordfile, line2))
+	{
+		if (ssid.empty()) ssid.append(line2); else { password.append(line2); bEmpty = false;}
+	}
+	cout << "SSID:" << ssid << '\t' << "Password:" << password << '\n';
+	switch (menu)
+	{
+	case 49:
+		if (bEmpty)
+		{
+			cout << "Enter Network Name:";
+			getline(std::cin, ssid);
+			cout << "Enter Network Password:";
+			getline(std::cin, password);
+
+			passwordfile.close();
+			clearcontent.open("SSID_Password.txt", 2);
+			clearcontent.close();
+			passwordfile.open("SSID_Password.txt");
+			passwordfile << ssid << '\n' << password;
+
+		}
+		command.append(ssid);
+		command.append(" key = ");
+		command.append(password);
+		system(command.c_str());
+		sleep(1000);
+
+		break;
+	case 50:
+		break;
+	case 51:
+		cout << "Enter Network Name:";
+		getline(std::cin, ssid);
+		cout << "Enter Network Password:";
+		getline(std::cin, password);
+
+		passwordfile.close();
+		clearcontent.open("SSID_Password.txt", 2);
+		clearcontent.close();
+		passwordfile.open("SSID_Password.txt");
+		passwordfile << ssid << '\n' << password;
+		command.append(ssid);
+		command.append(" key = ");
+		command.append(password);
+		system(command.c_str());
+		break;
+	default:
+		cout << menu;
+	}
 }
