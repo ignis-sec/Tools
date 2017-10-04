@@ -179,7 +179,7 @@ void submit_menu(int menu)
 	string ssid;
 	string password;
 	string line2;
-	string command = "netsh wlan set hostednetwork mode = allow ssid = ";
+	string command = "netsh wlan set hostednetwork mode=allow ssid=";
 
 	bool bEmpty = true;
 	while (getline(passwordfile, line2))
@@ -204,14 +204,21 @@ void submit_menu(int menu)
 			passwordfile << ssid << '\n' << password;
 
 		}
+		cout << "Configuring netsh command\n";
 		command.append(ssid);
-		command.append(" key = ");
+		command.append(" key=");
 		command.append(password);
+		cout << "Trying the new command:" << command << '\n';
 		system(command.c_str());
-		sleep(1000);
-
+		cout << "1000 ms delay for command to complete\n";
+		Sleep(1000);
+		cout << "Starting the network\n";
+		system("NETSH WLAN start hostednetwork");
+		cout << "Hotspot Started!\n";
+		_getch();
 		break;
 	case 50:
+		system("NETSH WLAN stop hostednetwork");
 		break;
 	case 51:
 		cout << "Enter Network Name:";
@@ -225,7 +232,7 @@ void submit_menu(int menu)
 		passwordfile.open("SSID_Password.txt");
 		passwordfile << ssid << '\n' << password;
 		command.append(ssid);
-		command.append(" key = ");
+		command.append(" key=");
 		command.append(password);
 		system(command.c_str());
 		break;
