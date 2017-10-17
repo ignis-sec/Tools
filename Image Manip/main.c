@@ -9,6 +9,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #define FILENAME "io.bmp"																											//
 																																	//
+#define HEADERSIZE 54																												//																																	
+																																	//
 #define SHADE 196																													//
 #define SHADE_RED SHADE								//if color is grayscale keep SHADERED/GREEN/BLUE defined as SHADE; change SHADE	//
 #define SHADE_BLUE SHADE																											//
@@ -54,16 +56,17 @@ int main(void)
 	green = 0;										//
 	blue = 0;										//
 
-	fseek(ioftp, -3, SEEK_END);						//set the last pixel as green and hope there are no other absolute greens on your images
-	fprintf(ioftp, "%c", 0);						
+	fseek(ioftp, -3, SEEK_END);						//set the last pixel as green and hope there are no other 1,255,1's
+	fprintf(ioftp, "%c", 1);						
 	fprintf(ioftp, "%c", 255);
-	fprintf(ioftp, "%c", 0);
+	fprintf(ioftp, "%c", 1);
 	fseek(ioftp, 0, SEEK_CUR);						//doesn't work without SEEK_CUR to itself(fuck C)
 
 
-	fseek(ioftp, 54, SEEK_SET);						//seek for 54th byte from start   :: SEEK_SET->From Start
+	fseek(ioftp, HEADERSIZE, SEEK_SET);						//seek for 54th byte from start   :: SEEK_SET->From Start
 	while ((ch = getc(ioftp)) != EOF)				//get char as long as it is	      :: SEEK_CUR->Current	     Also EOF doesn't do anything 
 	{												//not end of file                 :: SEEK_END->From End	     here, but might as well stay
+		if (ch == 0)continue;
 		switch (i % 3)				//switch on i%3 to check if it is r,g or b
 		{
 		case 0:										
@@ -76,7 +79,7 @@ int main(void)
 
 		case 2:										//Color cells in bmp end with red, so logic is applied here. 
 			red = ch;
-			if (red == 0 && blue == 0 && green == 255) return 0;		//stop if cell is absolute green(0,255,0)		
+			if (red == 1 && blue == 1 && green == 255) return 0;		//stop if cell is absolute green(1,255,1)		
 
 			if (((blue >= SHADE_BLUE-TOLERANCE_BLUE)&&(blue <= SHADE_BLUE + TOLERANCE_BLUE))			//if each color is 
 				&&((green >= SHADE_GREEN - TOLERANCE_GREEN)&&(green <= SHADE_GREEN + TOLERANCE_GREEN))	//in range of SHADE +- TOLERANCE
