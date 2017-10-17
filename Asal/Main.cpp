@@ -5,7 +5,7 @@
 using namespace std;
 
 void Encode(char  data[4], int b, std::ofstream &primefile);
-
+void Decode();
 
 int main(void)
 {
@@ -35,7 +35,7 @@ int main(void)
 	}
 
 															//loop and remove logic
-	for (int b = 2; b < maxNum; b++)
+	for (unsigned int b = 2; b < maxNum; b++)
 	{
 		if (!(b % 1000000)) cout << b << " = " << b / 1000000 << "x 10^6 " << '\n';
 		if (BinString[b] == 1)
@@ -51,6 +51,8 @@ int main(void)
 	}
 	if (!(maxNum % 1000000)) cout << maxNum << " = " << maxNum / 1000000 << "x 10^6 " << '\n';		//report position
 	cout << '\n';
+	primefile.close();
+	Decode();
 	return 0;
 }
 
@@ -64,4 +66,32 @@ void Encode(char  data[4], int b, std::ofstream &primefile)
 	data[2] = static_cast<char>((b >> 16) & 0xFF);
 	data[3] = static_cast<char>((b >> 24) & 0xFF);
 	primefile.write(data, 4);
+}
+
+
+void Decode()
+{
+
+	cout << "Reading encoded file..\n\n\n";
+	ifstream infile;
+	infile.open("primes.dat");
+	int i = 0;
+	int decoded;
+	char c = 0;
+	char data[4];
+	while (infile.get(c))
+	{
+		data[i % 4] = c;
+
+		if (i % 4 == 0 && i > 4)
+		{
+			decoded = data[0] + data[1] * 16 * 16 + data[2] * 16 * 16 * 16 * 16 + data[3] * 16 * 16 * 16 * 16 * 16 * 16;
+			cout << decoded << ",\t";
+			//cout << data[0] << data[1] << data[2] << data[3] << ",\t";
+		}
+		i++;
+	}
+	infile.close();
+	cout << '\n';
+
 }
