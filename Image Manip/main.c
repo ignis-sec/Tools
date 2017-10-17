@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define SHADE 196
+#define TOLERANCE 0
 //	Name: Isolate Text
 
 //	Author: Ata Hakcil
@@ -8,7 +9,7 @@
 
 
 //BMP architecture
-//
+// 54 bytes of header
 //
 //
 //
@@ -64,7 +65,7 @@ int main(void)
 		case 2:										//case red; color cells in bmp end with red, so logic is applied here. 
 			red = ch;								//If last cell has our SHADE,SHADE,SHADE grey, then we ignore (it is a text pixel)
 			if (red == 0 && blue == 0 && green == 255) return 0;
-			if (blue == SHADE && green == SHADE && red == SHADE)			
+			if (((blue >= SHADE-TOLERANCE)&&(blue <= SHADE + TOLERANCE))&&((green >= SHADE - TOLERANCE)&&(green <= SHADE + TOLERANCE))&&((red >= SHADE - TOLERANCE)&&(red <= SHADE + TOLERANCE)))
 			{
 				
 				//printf("%d %d %d\n", blue, green, red);
