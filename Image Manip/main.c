@@ -2,8 +2,8 @@
 
 //	Author: Ata Hakcil 
 //	Description:Isolate text inside BMP image from the background
-/// ///////////////////////////////////////////////////////////////////////////////////////IMPORTANT NULL BYTE COUNTER NOT IMPLEMENTED 
-#include <stdio.h>																		///MAKE SURE IMAGE WIDTH IS 4N until it is implemented
+
+#include <stdio.h>																		
 #include <stdlib.h>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,19 +58,17 @@ int main(void)
 	green = 0;										// 
 	blue = 0;										//
 
-	fseek(ioftp, 0, SEEK_END);						//set the last pixel as green and hope there are no other 1,255,1's
+	fseek(ioftp, 0, SEEK_END);						//write a 1,255,1 pixel after the image (invisible) and use it as a stop code
 	fprintf(ioftp, "%c", 1);						
 	fprintf(ioftp, "%c", 255);
 	fprintf(ioftp, "%c", 1);
 	fseek(ioftp, 0, SEEK_CUR);						//doesn't work without SEEK_CUR to itself(fuck C)
 
-	fseek(ioftp, 18, SEEK_SET);                  //null byte counter not implemented
-	width = (getc(ioftp) + getc(ioftp) * 16 * 16)*3;
-	printf("Width=%d\n", width);
+	fseek(ioftp, 18, SEEK_SET);                  //calculate image row size from the headers
+	width = (getc(ioftp) + getc(ioftp) * 16 * 16+ getc(ioftp)*16*16*16*16)*3;
 
 	fseek(ioftp, 0, SEEK_CUR);
 	if (width % 4) nullCount = 4 - width % 4; else nullCount = 0;
-	printf("Nulls=%d\n", nullCount);
 	fseek(ioftp, HEADERSIZE, SEEK_SET);						//seek for 54th byte from start   :: SEEK_SET->From Start
 	while ((ch = getc(ioftp)) != EOF)				//get char as long as it is	      :: SEEK_CUR->Current	     Also EOF doesn't do anything 
 	{												//not end of file                 :: SEEK_END->From End	     here, but might as well stay
@@ -111,9 +109,9 @@ int main(void)
 		}
 		if (i == width)
 		{
-			fseek(ioftp, nullCount, SEEK_CUR);             //null byte counter not yet implemented
+			fseek(ioftp, nullCount, SEEK_CUR);	            //If its the end of the pixel row, skip null bytes
 			fseek(ioftp, 0, SEEK_CUR);
-			i == 0;
+			i = 0;											//reset row iteration
 		} 
 		i++;												//iterate i
 	}
