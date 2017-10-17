@@ -4,7 +4,7 @@
 #include "Main.h"
 using namespace std;
 
-void Encode(char  data[4], int b, std::ofstream &primefile);
+void Encode(char  data[5], int b, std::ofstream &primefile);
 void Decode();
 
 int main(void)
@@ -16,7 +16,7 @@ int main(void)
 	int i = 0;
 	primefile.open("primes.dat");							//open encode file
 		
-	char data[4];
+	char data[5];
 
 															//get max number
 	cout << "Enter largest number to check:";
@@ -61,37 +61,47 @@ int main(void)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Encode(char  data[4], int b, std::ofstream &primefile)
 {
-	data[0] = static_cast<char>(b & 0xFF);
-	data[1] = static_cast<char>((b >> 8) & 0xFF);
-	data[2] = static_cast<char>((b >> 16) & 0xFF);
-	data[3] = static_cast<char>((b >> 24) & 0xFF);
-	primefile.write(data, 4);
+	if (b < 256) data[0] = 1;
+	else if (b < 65536) data[0] = 2;
+	else if (b < 16777216) data[0] = 3;
+	else data[0] = 4;
+	data[1] = static_cast<unsigned char>(b & 0xFF);
+	data[2] = static_cast<unsigned char>((b >> 8) & 0xFF);
+	data[3] = static_cast<unsigned char>((b >> 16) & 0xFF);
+	data[4] = static_cast<char>((b >> 24) & 0xFF);
+	primefile.write(data, data[0]+1);
 }
-
 
 void Decode()
 {
-
 	cout << "Reading encoded file..\n\n\n";
 	ifstream infile;
 	infile.open("primes.dat");
 	int i = 0;
-	int decoded;
+	int decoded=0;
 	char c = 0;
-	char data[4];
+	int temp=1;
+	bool bFirst = true;
+	unsigned char data[4];
 	while (infile.get(c))
 	{
-		data[i % 4] = c;
-
-		if (i % 4 == 0 && i > 4)
+		if (i != 0 && data[0]>1)
 		{
-			decoded = data[0] + data[1] * 16 * 16 + data[2] * 16 * 16 * 16 * 16 + data[3] * 16 * 16 * 16 * 16 * 16 * 16;
-			cout << decoded << ",\t";
-			//cout << data[0] << data[1] << data[2] << data[3] << ",\t";
+			if (i%data[0] == 0)
+				for (int a = 0; a < data[0]; a++)
+					decoded = decoded + data[a + 1] * pow(16, 2 * a);
+
+
 		}
-		i++;
+		else {
+			data[0] = c;
+			i++
+		}
+	
+		
 	}
 	infile.close();
 	cout << '\n';
-
+	system("PAUSE");
+	return ;
 }
