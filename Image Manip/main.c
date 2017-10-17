@@ -49,7 +49,7 @@ int main(void)
 
 	int red, green, blue;					//variables
 	int i = 0;						//iterator; starting from 54 because the first 54 bytes are reserved for bitmap headers
-	///int width;
+	int width;
 	int nullCount=0;
 	int ch=0;						//char variable to catch bytes from filestream
 	ioftp = fopen(FILENAME, "rb+");				//open file for read and write
@@ -58,16 +58,19 @@ int main(void)
 	green = 0;										// 
 	blue = 0;										//
 
-	fseek(ioftp, -3, SEEK_END);						//set the last pixel as green and hope there are no other 1,255,1's
+	fseek(ioftp, 0, SEEK_END);						//set the last pixel as green and hope there are no other 1,255,1's
 	fprintf(ioftp, "%c", 1);						
 	fprintf(ioftp, "%c", 255);
 	fprintf(ioftp, "%c", 1);
 	fseek(ioftp, 0, SEEK_CUR);						//doesn't work without SEEK_CUR to itself(fuck C)
 
-	///fseek(ioftp, 19, SEEK_SET);                  //null byte counter not implemented
-	///width = getc(ioftp) + getc(ioftp) * 16 * 16;
-	///fseek(ioftp, 0, SEEK_CUR);
-	///if (width % 4) nullCount = 4 - width % 4; else nullCount = 0;
+	fseek(ioftp, 18, SEEK_SET);                  //null byte counter not implemented
+	width = (getc(ioftp) + getc(ioftp) * 16 * 16)*3;
+	printf("Width=%d\n", width);
+
+	fseek(ioftp, 0, SEEK_CUR);
+	if (width % 4) nullCount = 4 - width % 4; else nullCount = 0;
+	printf("Nulls=%d\n", nullCount);
 	fseek(ioftp, HEADERSIZE, SEEK_SET);						//seek for 54th byte from start   :: SEEK_SET->From Start
 	while ((ch = getc(ioftp)) != EOF)				//get char as long as it is	      :: SEEK_CUR->Current	     Also EOF doesn't do anything 
 	{												//not end of file                 :: SEEK_END->From End	     here, but might as well stay
@@ -106,12 +109,14 @@ int main(void)
 			}
 			break;
 		}
-		///if (i == width)
-		///{
-		///	fseek(ioftp, nullCount, SEEK_CUR);             /null byte counter not yet implemented
-		///} 
+		if (i == width)
+		{
+			fseek(ioftp, nullCount, SEEK_CUR);             //null byte counter not yet implemented
+			fseek(ioftp, 0, SEEK_CUR);
+			i == 0;
+		} 
 		i++;												//iterate i
 	}
 	fclose(ioftp);									//close file
 	return 0;										//gtfo
-}
+}	
