@@ -50,6 +50,7 @@ int main(void)
 		}
 	}
 	if (!(maxNum % 1000000)) cout << maxNum << " = " << maxNum / 1000000 << "x 10^6 " << '\n';		//report position
+	cout << '\n';
 	return 0;
 }
 
