@@ -7,6 +7,8 @@
 #include <stdlib.h>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#define FILENAME "io.bmp"																											//
+																																	//
 #define SHADE 196																													//
 #define SHADE_RED SHADE								//if color is grayscale keep SHADERED/GREEN/BLUE defined as SHADE; change SHADE	//
 #define SHADE_BLUE SHADE																											//
@@ -28,6 +30,8 @@
 #define COLOR_BG_BLUE COLOR_BG																										//
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
 //BMP architecture
 // 54 bytes of header for 24 bit image 
 // BM tag image sizes colors definition etc
@@ -35,26 +39,16 @@
 //If a line of pixels is not size of 4n, file will be filled with 000 pixels until its size of 4n
 //BMP extension has no end file, it instead declares size at the start. Instead i declared 0,255,0 (green) as my EOF
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 int main(void)
 {
-	char filename[] = "io.bmp";						//filename
+
 	FILE * ioftp;								//pointer to the file
 
 	int red, green, blue;							//variables
-	int i = 54;									//iterator; starting from 54 because the first 54 bytes are reserved for bitmap headers
+	int i = 3;									//iterator; starting from 54 because the first 54 bytes are reserved for bitmap headers
 	unsigned short int ch=0;						//char variable to catch bytes from filestream
-	ioftp = fopen(filename, "rb+");				//open file for read and write
+	ioftp = fopen(FILENAME, "rb+");				//open file for read and write
 	
 	red = 0;										//initializing variables
 	green = 0;										//
@@ -82,24 +76,23 @@ int main(void)
 
 		case 2:										//Color cells in bmp end with red, so logic is applied here. 
 			red = ch;
-			if (red == 0 && blue == 0 && green == 255) return 0;			
+			if (red == 0 && blue == 0 && green == 255) return 0;		//stop if cell is absolute green(0,255,0)		
 
 			if (((blue >= SHADE_BLUE-TOLERANCE_BLUE)&&(blue <= SHADE_BLUE + TOLERANCE_BLUE))			//if each color is 
 				&&((green >= SHADE_GREEN - TOLERANCE_GREEN)&&(green <= SHADE_GREEN + TOLERANCE_GREEN))	//in range of SHADE +- TOLERANCE
 				&&((red >= SHADE_RED - TOLERANCE_RED)&&(red <= SHADE_RED + TOLERANCE_RED)))
 			{
-				
-				//printf("%d %d %d\n", blue, green, red);							//print statement slows down the code 100x times
-				fseek(ioftp, -3, SEEK_CUR);				//so we seek 3 btyes behind
-				fprintf(ioftp, "%c", COLOR_TEXT_BLUE);				//overwrite them with 0,0,0 (black) 
+				///printf("%x %x %x\n", blue, green, red);							//print statement slows down the code 100x times only for debug
+				fseek(ioftp, -3, SEEK_CUR);							//we seek 3 btyes behind
+				fprintf(ioftp, "%c", COLOR_TEXT_BLUE);				//overwrite them with text color
 				fprintf(ioftp, "%c", COLOR_TEXT_GREEN);
 				fprintf(ioftp, "%c", COLOR_TEXT_RED);
 				fseek(ioftp, 0, SEEK_CUR);				//doesn't work without SEEK_CUR to itself(fuck C)
 			}
-			else {									//if it is SHADE,SHADE,SHADE; it is part of the background, 
-				//printf("This isnt text:%d %d %d\n", blue, green, red);			//print statement slows down the code 100x times
-				fseek(ioftp, -3, SEEK_CUR);			//so we seek 3 btyes behind
-				fprintf(ioftp, "%c", COLOR_BG_BLUE);			//overwrite them with 255,255,255 (white) 
+			else {									
+				///printf("This isnt text:%x %x %x\n", blue, green, red);			//print statement slows down the code 100x times only for debug
+				fseek(ioftp, -3, SEEK_CUR);						//so we seek 3 btyes behind
+				fprintf(ioftp, "%c", COLOR_BG_BLUE);			//overwrite them with background color
 				fprintf(ioftp, "%c", COLOR_BG_GREEN);
 				fprintf(ioftp, "%c", COLOR_BG_RED);
 				fseek(ioftp, 0, SEEK_CUR);			//doesn't work without SEEK_CUR to itself(fuck C)
@@ -110,6 +103,3 @@ int main(void)
 	fclose(ioftp);									//close file
 	return 0;										//gtfo
 }
-
-
-
