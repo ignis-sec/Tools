@@ -22,12 +22,12 @@
 #define TOLERANCE_GREEN TOLERANCE																									//
 																																	//
 #define COLOR_TEXT 0								//color of your text															//
-#define COLOR_TEXT_RED	COLOR_TEXT																									//
+#define COLOR_TEXT_RED COLOR_TEXT																									//
 #define COLOR_TEXT_GREEN COLOR_TEXT																									//
 #define COLOR_TEXT_BLUE COLOR_TEXT																									//
 																																	//
 #define COLOR_BG 255								//color of your background														//
-#define COLOR_BG_RED	COLOR_BG																									//
+#define COLOR_BG_RED COLOR_BG																									//
 #define COLOR_BG_GREEN COLOR_BG																										//
 #define COLOR_BG_BLUE COLOR_BG																										//
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,17 +52,15 @@ int main(void)
 	int width;
 	int nullCount=0;
 	int ch=0;						//char variable to catch bytes from filestream
-	ioftp = fopen(FILENAME, "rb+");				//open file for read and write
-	
+				
+	if (!(ioftp = fopen(FILENAME, "rb+")))			//open file for read and write
+	{
+		return EXIT_FAILURE;
+	}
 	red = 0;										//initializing variables
 	green = 0;										// 
 	blue = 0;										//
 
-	fseek(ioftp, 0, SEEK_END);						//write a 1,255,1 pixel after the image (invisible) and use it as a stop code
-	fprintf(ioftp, "%c", 1);						
-	fprintf(ioftp, "%c", 255);
-	fprintf(ioftp, "%c", 1);
-	fseek(ioftp, 0, SEEK_CUR);						//doesn't work without SEEK_CUR to itself(fuck C)
 
 	fseek(ioftp, 18, SEEK_SET);                  //calculate image row size from the headers
 	width = (getc(ioftp) + getc(ioftp) * 16 * 16+ getc(ioftp)*16*16*16*16)*3;
@@ -84,7 +82,6 @@ int main(void)
 
 		case 2:										//Color cells in bmp end with red, so logic is applied here. 
 			red = ch;
-			if (red == 1 && blue == 1 && green == 255) return 0;		//stop if cell is absolute green(1,255,1)		
 
 			if (((blue >= SHADE_BLUE-TOLERANCE_BLUE)&&(blue <= SHADE_BLUE + TOLERANCE_BLUE))			//if each color is 
 				&&((green >= SHADE_GREEN - TOLERANCE_GREEN)&&(green <= SHADE_GREEN + TOLERANCE_GREEN))	//in range of SHADE +- TOLERANCE
@@ -116,5 +113,5 @@ int main(void)
 		i++;												//iterate i
 	}
 	fclose(ioftp);									//close file
-	return 0;										//gtfo
+	return EXIT_SUCCESS;							//gtfo
 }	
