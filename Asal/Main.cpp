@@ -51,6 +51,7 @@ int main(void)
 	}
 	if (!(maxNum % 1000000)) cout << maxNum << " = " << maxNum / 1000000 << "x 10^6 " << '\n';		//report position
 	cout << '\n';
+	primefile << (char)26 << (char)26 << (char)26;
 	primefile.close();
 	Decode();
 	return 0;
@@ -80,28 +81,44 @@ void Decode()
 	int i = 0;
 	int decoded=0;
 	char c = 0;
-	int temp=1;
-	bool bFirst = true;
-	unsigned char data[4];
-	while (infile.get(c))
+	unsigned char data[5];
+	data[0] = 1;
+	data[1] = 0;
+	data[2] = 0;
+	data[3] = 0;
+	data[4] = 0;
+	while (1)
 	{
-		if (i != 0 && data[0]>1)
+		infile.read(&c, 1);
+		
+		if (data[0] > 5)
 		{
-			if (i%data[0] == 0)
-				for (int a = 0; a < data[0]; a++)
-					decoded = decoded + data[a + 1] * pow(16, 2 * a);
-
-
+			decoded = data[1] + data[2] * 256 + data[3] * 65536 + data[4] * 16777216;
+			cout << '\n';
+			return;
+		}
+		if (data[0] == i-1)
+		{
+			decoded = (int)data[1] + (int)data[2] * 256 + (int)data[3] * 65536 + (int)data[4] * 16777216;
+			data[0] = c;
+			data[1] = 0;
+			data[2] = 0;
+			data[3] = 0;
+			data[4] = 0;
+			cout << decoded << ",\t";
+		
+			i = 1;
 		}
 		else {
-			data[0] = c;
-			i++
+			data[i] = c;
+			i++;
+			
 		}
-	
-		
+
 	}
+	
+	cout << decoded;
 	infile.close();
 	cout << '\n';
-	system("PAUSE");
 	return ;
 }

@@ -9,21 +9,38 @@ int main(void)
 	ifstream infile;
 	infile.open("primes.dat");
 	int i = 0;
-	int decoded;
+	int decoded = 0;
 	char c = 0;
-	unsigned char data[4];
-	while (infile.get(c))
+	unsigned char data[5];
+	data[0] = 1;
+	data[1] = 0;
+	data[2] = 0;
+	data[3] = 0;
+	data[4] = 0;
+	//infile.seekg(1, infile.beg);
+	while (infile.good())
 	{
-		data[i % 4] = c;
-
-		if (i % 4 == 0 && i > 4)
+		infile.get(c);
+		if (data[0] == i - 1)
 		{
-			decoded = data[0] + data[1] * 256 + data[2] * 65536 + data[3] * 16777216;
+			decoded = data[1] + data[2] * 256 + data[3] * 65536 + data[4] * 16777216;
+
+			data[1] = 0;
+			data[2] = 0;
+			data[3] = 0;
+			data[4] = 0;
 			cout << decoded << ",\t";
-			//cout << data[0] << data[1] << data[2] << data[3] << ",\t";
+			data[0] = c;
+			i = 1;
 		}
-		i++;
+		else {
+			data[i] = c;
+			i++;
+		}
+
 	}
+	decoded = data[1] + data[2] * 256 + data[3] * 65536 + data[4] * 16777216;
+	cout << decoded;
 	infile.close();
 	cout << '\n';
 	system("PAUSE");
