@@ -1,4 +1,4 @@
-# Isolate-Text-From-Image
+# Code-for-isolating-white-text
 Fast c script for reading through a 24 bit .BMP file and isolating the text inside
 
 It reads the BMP headers index 18-19-20 and calculates row size and null byte counts from it. 
