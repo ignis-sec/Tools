@@ -27,7 +27,7 @@
 #define COLOR_TEXT_BLUE COLOR_TEXT																									//
 																																	//
 #define COLOR_BG 255								//color of your background														//
-#define COLOR_BG_RED COLOR_BG																									//
+#define COLOR_BG_RED COLOR_BG																										//
 #define COLOR_BG_GREEN COLOR_BG																										//
 #define COLOR_BG_BLUE COLOR_BG																										//
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
