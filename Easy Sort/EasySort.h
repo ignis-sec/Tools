@@ -1,14 +1,14 @@
 #pragma once
-
-
+#include <ctime>
+#include <algorithm>
 
 
 
 ////////////////////////////////////////////////////////
 template <class T_DataType>
-int Bubble_Sort(T_DataType arr[], int size)
+double Bubble_Sort(T_DataType arr[], int size)
 {
-	int swapcount =0;
+	clock_t begin = clock();
 	bool sorted = false;
 	while (sorted == false)
 	{
@@ -20,18 +20,18 @@ int Bubble_Sort(T_DataType arr[], int size)
 			{
 				sorted = false;
 				swap(arr[i], arr[i + 1]);
-				swapcount++;
 			}
 		}
 	}
-	return swapcount;
+	clock_t end = clock();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
 }
 
 ////////////////////////////////////////////////////////
 template <class T_DataType>
-int Selection_Sort(T_DataType arr[], int n)
+double Selection_Sort(T_DataType arr[], int n)
 {
-	int swapcount = 0;
+	clock_t begin = clock();
 	for (int i = 0; i < n - 1; ++i)
 	{
 		int min = i;
@@ -40,17 +40,17 @@ int Selection_Sort(T_DataType arr[], int n)
 			if (arr[j] < arr[min]) min = j;			
 		}
 		swap(arr[i], arr[min]);
-		swapcount++;
 	}
-	return swapcount;
+	clock_t end = clock();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
 }
 
 ////////////////////////////////////////////////////////
 template <class T_DataType>
-int Insertion_Sort(T_DataType arr[], int n)
+double Insertion_Sort(T_DataType arr[], int n)
 {
-	
-	int i, key, j, swapcount =0;
+	clock_t begin = clock();
+	int i, key, j;
 	for (i = 1; i < n; i++)
 	{
 		key = arr[i];
@@ -59,11 +59,11 @@ int Insertion_Sort(T_DataType arr[], int n)
 		{
 			arr[j + 1] = arr[j];
 			j = j - 1;
-			swapcount++;
 		}
 		arr[j + 1] = key;
 	}
-	return swapcount;
+	clock_t end = clock();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
 }
 
 ////////////////////////////////////////////////////////
@@ -129,9 +129,9 @@ void merge(T_DataType arr[], int left, int middle, int right)
 
 //if you are calling this function, pass (arr, 0, size-1)
 template <class T_DataType>
-int Merge_Sort(T_DataType arr[], int left_index, int right_index)
+double Merge_Sort(T_DataType arr[], int left_index, int right_index)
 {
-	int swapcount = 0;
+	clock_t begin = clock();
 	
 	if (left_index < right_index)
 	{
@@ -143,5 +143,18 @@ int Merge_Sort(T_DataType arr[], int left_index, int right_index)
 
 		merge(arr, left_index, m, right_index);
 	}
-	return swapcount;
+	clock_t end = clock();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
+}
+
+
+template <class T_DataType>
+void quickSort(T_DataType arr[], int left, int right)
+{
+	if (first < right)
+	{
+		int pivotIndex = partition(arr, left, right);
+		quickSort(arr, left, pivotIndex - 1);
+		quickSort(arr, pivotIndex + 1, right);
+	}
 }
