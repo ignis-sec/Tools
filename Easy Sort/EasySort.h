@@ -147,14 +147,40 @@ double Merge_Sort(T_DataType arr[], int left_index, int right_index)
 	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
 }
 
+template <class T_DataType>
+int partition(T_DataType arr[], int left, int right)
+{
+	if (left >= right)
+		return left;
+
+	T_DataType pivot = arr[left];
+	int lastS1 = left;
+	int firstUnknown = right + 1;
+
+	for (; firstUnknown <= right; firstUnknown++)
+	{
+		if (arr[firstUnknown] < pivot)
+		{
+			lastS1++;
+			swap(arr[lastS1], arr[firstUnknown]);
+		}
+		// else it is part of S2
+	}
+	swap(arr[left], arr[lastS1]);
+
+	return lastS1;
+}
 
 template <class T_DataType>
-void quickSort(T_DataType arr[], int left, int right)
+double Quick_Sort(T_DataType arr[], int left, int right)
 {
-	if (first < right)
+	clock_t begin = clock();
+	if (left < right)
 	{
 		int pivotIndex = partition(arr, left, right);
-		quickSort(arr, left, pivotIndex - 1);
-		quickSort(arr, pivotIndex + 1, right);
+		Quick_Sort(arr, left, pivotIndex - 1);
+		Quick_Sort(arr, pivotIndex + 1, right);
 	}
+	clock_t end = clock();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
 }
