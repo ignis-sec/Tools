@@ -154,21 +154,21 @@ int partition(T_DataType arr[], int left, int right)
 		return left;
 
 	T_DataType pivot = arr[left];
-	int lastS1 = left;
-	int firstUnknown = right + 1;
+	int rightS1 = left;
+	int leftUnknown = left + 1;
 
-	for (; firstUnknown <= right; firstUnknown++)
+	for (; leftUnknown <= right; leftUnknown++)
 	{
-		if (arr[firstUnknown] < pivot)
+		if (arr[leftUnknown] < pivot)
 		{
-			lastS1++;
-			swap(arr[lastS1], arr[firstUnknown]);
+			rightS1++;
+			swap(arr[rightS1], arr[leftUnknown]);
 		}
 		// else it is part of S2
 	}
-	swap(arr[left], arr[lastS1]);
+	swap(arr[left], arr[rightS1]);
 
-	return lastS1;
+	return rightS1;
 }
 
 template <class T_DataType>
@@ -180,6 +180,39 @@ double Quick_Sort(T_DataType arr[], int left, int right)
 		int pivotIndex = partition(arr, left, right);
 		Quick_Sort(arr, left, pivotIndex - 1);
 		Quick_Sort(arr, pivotIndex + 1, right);
+	}
+	clock_t end = clock();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
+}
+
+
+template <class T_DataType>
+/* function to sort arr using shellSort */
+double Shell_Sort(T_DataType arr[], int n)
+{
+	clock_t begin = clock();
+	// Start with a big gap, then reduce the gap
+	for (int gap = n / 2; gap > 0; gap /= 2)
+	{
+		// Do a gapped insertion sort for this gap size.
+		// The first gap elements a[0..gap-1] are already in gapped order
+		// keep adding one more element until the entire array is
+		// gap sorted 
+		for (int i = gap; i < n; i += 1)
+		{
+			// add a[i] to the elements that have been gap sorted
+			// save a[i] in temp and make a hole at position i
+			T_DataType temp = arr[i];
+
+			// shift earlier gap-sorted elements up until the correct 
+			// location for a[i] is found
+			int j;
+			for (j = i; j >= gap && arr[j - gap] > temp; j -= gap)
+				arr[j] = arr[j - gap];
+
+			//  put temp (the original a[i]) in its correct location
+			arr[j] = temp;
+		}
 	}
 	clock_t end = clock();
 	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
