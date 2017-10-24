@@ -1,7 +1,8 @@
 #pragma once
 #include <ctime>
 #include <algorithm>
-
+#include <thread>
+#define _VARIADIC_MAX 10
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -230,3 +231,51 @@ double Shell_Sort(T_DataType arr[], int n)
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
+
+
+template <class T_DataType>
+double T_Bubble_Sort(T_DataType arr[], int size)
+{
+	clock_t begin = clock();
+	std::vector<std::thread> threads;
+	bool sorted = false;
+	while (sorted == false)
+	{
+		for (int i = 1; i <= 15; ++i)
+			threads.push_back(std::thread(T_subBubble, (size/5)*(i-1), (size / 5)*(i)));	
+		
+	}
+	for (auto& th : threads) th.join();
+	clock_t end = clock();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
+}
+template <class T_DataType>
+void T_subBubble(T_DataType arr[], int l, int r)
+{
+	for (int i = l; i < r - 1; ++i)
+	{
+
+		if (arr[i] > arr[i + 1])
+		{
+			swap(arr[i], arr[i + 1]);
+		}
+	}  
+}
+
+template <class T_DataType>
+double T_Quick_Sort(T_DataType arr[], int left, int right)
+{
+	std::vector<std::thread> threads;
+	clock_t begin = clock();
+	if (left < right)
+	{
+		int pivotIndex = partition(arr, left, right);
+		std::thread first(T_Quick_Sort<T_DataType>, arr, left, pivotIndex - 1);
+		std::thread second(T_Quick_Sort<T_DataType>, arr, pivotIndex + 1, right);
+	}
+	clock_t end = clock();
+	first.join();
+	second.join();
+	return ((double)end - (double)begin) / (double)CLOCKS_PER_SEC;
+}
+
