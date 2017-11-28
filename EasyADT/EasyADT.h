@@ -25,7 +25,7 @@ class mynode:node2way{
 
 And override the virtual T_NodeType* createNode(); to take node properties as input and set them
 */
-
+////////////////////////////////////////////////////////////////////////////////////////////////
 /*Returns table:
 		LinkList::append()
 			0:list was empty, added to front
@@ -50,7 +50,6 @@ And override the virtual T_NodeType* createNode(); to take node properties as in
 		Queue::enqueue
 			returns order in queue
 */
-
 typedef class node* position;
 typedef class node2way* position2w;
 
@@ -77,7 +76,6 @@ public:
 	unsigned int get_size(){return size;};
 	bool is_empty();
 	virtual int append(position newNodePtr);			//append to the end of LinkList"
-	T_NodeType* LinkList<T_NodeType>::create_node();		//create a new node 
 	virtual void clear();
 	virtual void print();
 private:
@@ -108,7 +106,7 @@ int LinkList<class T_NodeType>::append(position newNodePtr) {
 }
 
 template <class T_NodeType>
-T_NodeType* LinkList<T_NodeType>::create_node()					//user should check if enough memory is available (if return is nullptr)
+T_NodeType* create_node()					//user should check if enough memory is available (if return is nullptr)
 {
 	T_NodeType *newNode;
 	newNode = (T_NodeType*)malloc(sizeof(T_NodeType));
@@ -140,11 +138,8 @@ void LinkList<class T_NodeType>::print()
 	}
 	return;
 }
-
-
 /////////////////////////////////////////////////
 //derieved class
-
 class DoublyLinkedList : private LinkList<T_NodeType>
 {
 public:
@@ -184,8 +179,6 @@ void DoublyLinkedList::clear()
 	head = tail = NULL;											//remove dangling pointers
 	return;
 }
-
-
 /////////////////////////////////////////////////
 //derieved class
 class CircularLinkedList: public LinkList<T_NodeType> {
@@ -227,8 +220,6 @@ void CircularLinkedList::print()
 	}
 	return;
 }
-
-
 /////////////////////////////////////////////////
 //derieved class
 class CircularDoublyLinkedList : public CircularLinkedList {
@@ -273,30 +264,20 @@ void CircularDoublyLinkedList::print()
 	}
 	return;
 }
-
 ///////////////////////////////////////////////////////////////////////////
 //Stack
-
 template <class T_NodeType>
 class Stack {
 public:
 	T_NodeType* pop();
 	int push(T_NodeType node);
 	int check_capacity();
-	T_NodeType* create_node();
 private:
 	position head;
 	unsigned int capacity =STACK_CAPACITY;
 	int TopOfStack = -1;
 };
 
-template <class T_NodeType>
-T_NodeType* Stack<T_NodeType>::create_node()					//user should check if enough memory is available (if return is nullptr)
-{
-	T_NodeType *newNode;
-	newNode = (T_NodeType*)malloc(sizeof(T_NodeType));
-	return newNode;
-}
 T_NodeType* Stack<T_NodeType>::pop()
 {
 	T_NodeType *cur = (T_NodeType*)head;
@@ -304,6 +285,7 @@ T_NodeType* Stack<T_NodeType>::pop()
 	TopOfStack--;
 	return cur;
 }
+
 template <class T_NodeType>
 int Stack<T_NodeType>::push(T_NodeType node)
 {
@@ -321,16 +303,12 @@ int Stack<T_NodeType>::check_capacity()
 	return capacity - TopOfStack-1;
 
 }
-
-
-
 ///////////////////////////////////////////////////////////////////////////
 //Queue
 template <class T_NodeType>
 class Queue {
 public:
 	int check_capacity();
-	T_NodeType* create_node();
 	T_NodeType* dequeue();
 	int enqueue(T_NodeType node);
 private:
@@ -343,14 +321,6 @@ private:
 int Queue<class T_NodeType>::check_capacity()
 {
 	return capacity - inOrder;
-}
-
-template <class T_NodeType>
-T_NodeType* Queue<T_NodeType>::create_node()					//user should check if enough memory is available (if return is nullptr)
-{
-	T_NodeType *newNode;
-	newNode = (T_NodeType*)malloc(sizeof(T_NodeType));
-	return newNode;
 }
 
 template <class T_NodeType>
