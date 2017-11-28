@@ -33,7 +33,10 @@ And override the virtual T_NodeType* createNode(); to take node properties as in
 
 		LinkList::CreateNode()
 			ptr to the new node(should be checked if null)
-
+		
+		DoublyLinkList::append()
+		0:list was empty, added to front
+		1:added to tail
 		
 
 
@@ -52,18 +55,20 @@ And override the virtual T_NodeType* createNode(); to take node properties as in
 
 
 typedef class node* position;
+typedef class node2way* position2w;
 
 class node{
 	//
 public:
-	position next;
+	virtual void set_node_values();					//empty and should be overridden in inherited class
+	position next=NULL;								//example set_node_values(int a, char b){c=a; d=b;}
 };
-
 
 class node2way : public node {
 	//
 public:
-	position previous;
+	position2w next = NULL;
+	position2w previous=NULL;
 };
 
 //LinkList class decleration
@@ -83,16 +88,6 @@ private:
 	position tail=NULL;
 	unsigned int size = 0;
 
-};
-
-//derieved class
-template <class T_NodeType>
-class DoublyLinkedList : private LinkList<T_NodeType>
-{
-	virtual int append(position newNodePtr);			//append to the end of LinkList"
-	T_NodeType* LinkList<T_NodeType>::create_node();		//create a new node 
-	virtual void clear();
-	virtual void print();
 };
 
 bool LinkList<class T_NodeType>::is_empty() {
@@ -134,6 +129,7 @@ void LinkList<class T_NodeType>::clear()
 	}
 	free(previous);												//free last element		
 	head = tail = NULL;											//remove dangling pointers
+	size = 0;
 	return;
 }
 
@@ -149,7 +145,22 @@ void LinkList<class T_NodeType>::print()
 }
 
 
-int DoublyLinkedList<class T_NodeType>::append(position newNodePtr) {
+/////////////////////////////////////////////////
+//derieved class
+template <class T_NodeType>
+class DoublyLinkedList : private LinkList<T_NodeType>
+{
+public:
+	virtual int append(position2w newNodePtr);			//append to the end of LinkList"
+	virtual void clear();
+private:
+	position2w head = NULL;
+	position2w tail = NULL;
+	unsigned int size = 0;
+
+};
+
+int DoublyLinkedList<class T_NodeType>::append(position2w newNodePtr) {
 	if (is_empty())
 	{
 		head = newNodePtr;
@@ -158,8 +169,54 @@ int DoublyLinkedList<class T_NodeType>::append(position newNodePtr) {
 		return 0;
 	}
 	tail->next = newNodePtr;
+	newNodePtr->previous = tail;
 	tail = newNodePtr;
 	size++;
 	return 1;
 
 }
+
+void DoublyLinkedList<class T_NodeType>::clear()
+{
+	position2w cur = head->next;
+	while (cur != NULL)											//traverse the list and free previous element each step
+	{
+		free(cur->previous);
+		cur = cur->next;
+	}	
+	head = tail = NULL;											//remove dangling pointers
+	return;
+}
+
+
+/////////////////////////////////////////////////
+//derieved class
+class CircularLinkedList: public LinkList<T_NodeType> {
+public:
+	unsigned int get_size() { return size; };
+	virtual int append(position newNodePtr);			//append to the end of LinkList"
+	virtual void clear();
+	virtual void print();
+private:
+	position head = NULL;
+	unsigned int size = 0;
+
+};
+
+int CircularLinkedList::append(position newNodePtr) {
+	if (is_empty())
+	{
+		head = newNodePtr;
+		size++;
+		return 0;
+	}
+	position temp = head->next;
+	head->next = newNodePtr;
+	newNodePtr->next = temp;
+	size++;
+	return 1;
+
+}
+
+
+
