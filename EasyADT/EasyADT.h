@@ -1,6 +1,6 @@
 #include <malloc.h>
-
-
+#define STACK_CAPACITY 10000
+#define	QUEUE_CAPACITY 10000
 
 /*how to use:
 
@@ -275,4 +275,103 @@ void CircularDoublyLinkedList::print()
 		if (bFirst) bFirst = false;
 	}
 	return;
+}
+
+///////////////////////////////////////////////////////////////////////////
+//Stack
+
+template <class T_NodeType>
+class Stack {
+public:
+	T_NodeType* pop();
+	int push(T_NodeType node);
+	int check_capacity();
+	T_NodeType* create_node();
+private:
+	position head;
+	unsigned int capacity =STACK_CAPACITY;
+	int TopOfStack = -1;
+};
+
+template <class T_NodeType>
+T_NodeType* Stack<T_NodeType>::create_node()					//user should check if enough memory is available (if return is nullptr)
+{
+	T_NodeType *newNode;
+	newNode = (T_NodeType*)malloc(sizeof(T_NodeType));
+	return newNode;
+}
+T_NodeType* Stack<T_NodeType>::pop()
+{
+	T_NodeType *cur = (T_NodeType*)head;
+	head = head->next;
+	TopOfStack--;
+	return cur;
+}
+template <class T_NodeType>
+int Stack<T_NodeType>::push(T_NodeType node)
+{
+	if (check_capacity > 0)
+	{
+		(position)node->next = head;
+		TopOfStack++;
+	}
+}
+
+template <class T_NodeType>
+int Stack<T_NodeType>::check_capacity()
+{
+	return capacity - TopOfStack-1;
+
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+//Queue
+template <class T_NodeType>
+class Queue {
+public:
+	int check_capacity();
+	T_NodeType* create_node();
+	T_NodeType* dequeue();
+	int enqueue(T_NodeType node);
+private:
+	position head;
+	position tail;
+	unsigned int capacity = QUEUE_CAPACITY;
+	int inOrder = 0;
+};
+
+int Queue<class T_NodeType>::check_capacity()
+{
+	return capacity - inOrder;
+}
+
+template <class T_NodeType>
+T_NodeType* Queue<T_NodeType>::create_node()					//user should check if enough memory is available (if return is nullptr)
+{
+	T_NodeType *newNode;
+	newNode = (T_NodeType*)malloc(sizeof(T_NodeType));
+	return newNode;
+}
+
+template <class T_NodeType>
+T_NodeType* Queue<T_NodeType>::dequeue()					//user should check if enough memory is available (if return is nullptr)
+{
+	position temp = head;
+	head->next = head;
+	inOrder--;
+	return (T_NodeType)head;
+}
+
+template <class T_NodeType>
+int Queue<T_NodeType>::enqueue(T_NodeType node)					//user should check if enough memory is available (if return is nullptr)
+{
+	if (check_capacity() > 0)
+	{
+		tail->next = node;
+		tail = node;
+		inOrder++;
+		return inOrder;
+	}
 }
