@@ -31,28 +31,25 @@ And override the virtual T_NodeType* createNode(); to take node properties as in
 			0:list was empty, added to front
 			1:added to tail
 
-		LinkList::CreateNode()
+		LinkList::create_node()
 			ptr to the new node(should be checked if null)
 		
 		DoublyLinkList::append()
-		0:list was empty, added to front
-		1:added to tail
+			0:list was empty, added to front
+			1:added to tail
 		
+		Stack::check_capacity
+			returns slots available
 
+		Stack::push
+			returns top of stack
 
+		Queue::check_capacity
+			returns slots available
 
-
-
+		Queue::enqueue
+			returns order in queue
 */
-
-
-
-
-
-
-
-
-
 
 typedef class node* position;
 typedef class node2way* position2w;
@@ -315,6 +312,7 @@ int Stack<T_NodeType>::push(T_NodeType node)
 		(position)node->next = head;
 		TopOfStack++;
 	}
+	return TopOfStack;
 }
 
 template <class T_NodeType>
