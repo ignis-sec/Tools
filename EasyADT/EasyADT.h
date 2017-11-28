@@ -147,7 +147,7 @@ void LinkList<class T_NodeType>::print()
 
 /////////////////////////////////////////////////
 //derieved class
-template <class T_NodeType>
+
 class DoublyLinkedList : private LinkList<T_NodeType>
 {
 public:
@@ -160,7 +160,7 @@ private:
 
 };
 
-int DoublyLinkedList<class T_NodeType>::append(position2w newNodePtr) {
+int DoublyLinkedList::append(position2w newNodePtr) {
 	if (is_empty())
 	{
 		head = newNodePtr;
@@ -168,7 +168,7 @@ int DoublyLinkedList<class T_NodeType>::append(position2w newNodePtr) {
 		size++;
 		return 0;
 	}
-	tail->next = newNodePtr;
+	tail->next = newNodePtr;									//tie both next and previous
 	newNodePtr->previous = tail;
 	tail = newNodePtr;
 	size++;
@@ -176,7 +176,7 @@ int DoublyLinkedList<class T_NodeType>::append(position2w newNodePtr) {
 
 }
 
-void DoublyLinkedList<class T_NodeType>::clear()
+void DoublyLinkedList::clear()
 {
 	position2w cur = head->next;
 	while (cur != NULL)											//traverse the list and free previous element each step
@@ -194,8 +194,7 @@ void DoublyLinkedList<class T_NodeType>::clear()
 class CircularLinkedList: public LinkList<T_NodeType> {
 public:
 	unsigned int get_size() { return size; };
-	virtual int append(position newNodePtr);			//append to the end of LinkList"
-	virtual void clear();
+	virtual int append(position newNodePtr);			//append to the end of LinkList
 	virtual void print();
 private:
 	position head = NULL;
@@ -207,10 +206,11 @@ int CircularLinkedList::append(position newNodePtr) {
 	if (is_empty())
 	{
 		head = newNodePtr;
+		newNodePtr->next = newNodePtr;				//loop list around
 		size++;
 		return 0;
 	}
-	position temp = head->next;
+	position temp = head->next;						//insert after the header and tie back
 	head->next = newNodePtr;
 	newNodePtr->next = temp;
 	size++;
@@ -218,5 +218,61 @@ int CircularLinkedList::append(position newNodePtr) {
 
 }
 
+void CircularLinkedList::print()
+{
+	bool bFirst = true;
+	unsigned int i = 1;
+	position cur = head;
+	while (cur != head && !bFirst)
+	{
+		std::cout << i << ". " /* << YOUR VARIABLE HERE << */ << std::endl;
+		if(bFirst) bFirst = false;
+	}
+	return;
+}
 
 
+/////////////////////////////////////////////////
+//derieved class
+class CircularDoublyLinkedList : public CircularLinkedList {
+public:
+	unsigned int get_size() { return size; };
+	virtual int append(position2w newNodePtr);			//append to the end of LinkList
+	virtual void print();
+private:
+	position2w head = NULL;
+	unsigned int size = 0;
+
+};
+
+int CircularDoublyLinkedList::append(position2w newNodePtr) {
+	if (is_empty())
+	{
+		head = newNodePtr;
+		newNodePtr->next = newNodePtr;				//loop list around
+		newNodePtr->previous = newNodePtr;
+		size++;
+		return 0;
+	}
+	position2w temp = head->next;						//insert after the header and tie back
+	head->next = newNodePtr;
+	newNodePtr->previous = head;
+	newNodePtr->next = temp;
+	temp->previous = newNodePtr;
+	size++;
+	return 1;
+
+}
+
+void CircularDoublyLinkedList::print()
+{
+	bool bFirst = true;
+	unsigned int i = 1;
+	position2w cur = head;
+	while (cur != head && !bFirst)
+	{
+		std::cout << i << ". " /* << YOUR VARIABLE HERE << */ << std::endl;
+		if (bFirst) bFirst = false;
+	}
+	return;
+}
