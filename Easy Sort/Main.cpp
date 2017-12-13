@@ -2,7 +2,7 @@
 #include "Easysort.h"
 #include <Windows.h>
 
-#define SIZE 15000
+#define SIZE 1500
 
 
 using namespace std;
@@ -25,9 +25,9 @@ int main(void)
 	//timetaken = Merge_Sort(arr, 0, SIZE-1);    			//0.019,  0.026,  0.030
 	//timetaken = Quick_Sort(arr, 0, SIZE-1);    			//0.013,  0.019,  0.023
 	//timetaken = Shell_Sort(arr,SIZE);						//0.003,  0.005,  0.005
-	//timetaken = T_Quick_Sort(arr, 0, SIZE-1);    			//
-	timetaken = Bubble_Sort(arr, SIZE);
-
+	timetaken = T_Quick_Sort(arr, 0, SIZE-1);    			//
+	//timetaken = T_Bubble_Sort(arr, SIZE);
+	
 	cout << "took " << timetaken << " seconds\n";
 	cout << "First 100 elements:\n";
 	Sleep(1000);
