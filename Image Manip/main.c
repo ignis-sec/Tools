@@ -12,14 +12,14 @@
 #define HEADERSIZE 54																												//																																	
 																																	//
 #define SHADE 196																													//
-#define SHADE_RED SHADE								//if color is grayscale keep SHADERED/GREEN/BLUE defined as SHADE; change SHADE	//
-#define SHADE_BLUE SHADE																											//
-#define SHADE_GREEN SHADE																											//
+#define SHADE_RED 45								//if color is grayscale keep SHADERED/GREEN/BLUE defined as SHADE; change SHADE	//
+#define SHADE_BLUE 90																												//
+#define SHADE_GREEN 36																												//
 																																	//
-#define TOLERANCE 0									//change below if you want custom tolerance on each color						//
-#define TOLERANCE_RED TOLERANCE						//just keep it positive															//
-#define TOLERANCE_BLUE TOLERANCE																									//
-#define TOLERANCE_GREEN TOLERANCE																									//
+#define TOLERANCE 50									//change below if you want custom tolerance on each color					//
+#define TOLERANCE_RED 100						//just keep it positive															//
+#define TOLERANCE_BLUE 50																									//
+#define TOLERANCE_GREEN 100																									//
 																																	//
 #define COLOR_TEXT 0								//color of your text															//
 #define COLOR_TEXT_RED COLOR_TEXT																									//
