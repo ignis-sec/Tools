@@ -10,7 +10,9 @@ public:
 	void drawPartialScreen(short startX, short startY, short endX, short endY);
 	void drawScreen();
 	void stringAtLocation(string S, short x, short y);
-	void AttributeAtLocation(string S, short x, short y);
+	void AttributeAtLocation(WORD Attribute, short startX, short startY, short endX, short endY);
+	INPUT_RECORD* Inputs();
+	HANDLE getHandle() { return hConsole; }
 
 private:
 	CHAR_INFO *m_screenChar;
@@ -49,17 +51,27 @@ void ConsoleHandler::drawScreen()
 
 void ConsoleHandler::stringAtLocation(string S, short x, short y)
 {
-	SMALL_RECT rect = { x,y,x + S.length(),y };
-
 	for (unsigned i = 0; i<S.length(); ++i)
 	{
 		m_screenChar[y*m_nScreenWidth + x + i].Char.AsciiChar= S.at(i);
 	}
-	drawScreen();
 	drawPartialScreen(x,y,x+S.length(),y);
 }
 
-void ConsoleHandler::AttributeAtLocation(string S, short x, short y)
+void ConsoleHandler::AttributeAtLocation(WORD Attribute, short startX, short startY, short endX, short endY)
 {
+	for (unsigned i = startX; i <= endX; ++i)
+		for (unsigned j = startY; j <= endY; ++j)
+		{
+			m_screenChar[j*m_nScreenWidth + i].Attributes = Attribute;
+		}
+	drawPartialScreen(startX, startY, endX, endY);
+}
+INPUT_RECORD* ConsoleHandler::Inputs()
+{
+	INPUT_RECORD Inputs[15];
+	DWORD garbage;
+	ReadConsoleInput(hConsole, Inputs, 50, &garbage);
+	return Inputs;
 
 }
