@@ -67,11 +67,3 @@ void ConsoleHandler::AttributeAtLocation(WORD Attribute, short startX, short sta
 		}
 	drawPartialScreen(startX, startY, endX, endY);
 }
-INPUT_RECORD* ConsoleHandler::Inputs()
-{
-	INPUT_RECORD Inputs[15];
-	DWORD garbage;
-	ReadConsoleInput(hConsole, Inputs, 50, &garbage);
-	return Inputs;
-
-}
