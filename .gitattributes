@@ -65,4 +65,8 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+<<<<<<< HEAD
 >>>>>>> hotspot/master
+=======
+>>>>>>> winsock/master
+>>>>>>> Winsock-File-Transfer
