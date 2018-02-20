@@ -14,6 +14,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #[Dd]ebug/
 #[Dd]ebugPublic/
 #[Rr]elease/
@@ -29,6 +30,8 @@
 >>>>>>> PrimeFinder
 =======
 >>>>>>> Easy-ADT
+=======
+>>>>>>> Easy-Sort
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -41,11 +44,14 @@ bld/
 [Ll]og/
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> Winsock-File-Transfer
 =======
 >>>>>>> PrimeFinder
 =======
 >>>>>>> Easy-ADT
+=======
+>>>>>>> Easy-Sort
 
 # Visual Studio 2015 cache/options directory
 .vs/
