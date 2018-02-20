@@ -12,6 +12,7 @@
 
 # Build results
 <<<<<<< HEAD
+<<<<<<< HEAD
 #[Dd]ebug/
 #[Dd]ebugPublic/
 #[Rr]elease/
@@ -23,6 +24,8 @@
 #[Oo]bj/
 #[Ll]og/
 =======
+=======
+>>>>>>> PrimeFinder
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -33,7 +36,10 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+<<<<<<< HEAD
 >>>>>>> Winsock-File-Transfer
+=======
+>>>>>>> PrimeFinder
 
 # Visual Studio 2015 cache/options directory
 .vs/
