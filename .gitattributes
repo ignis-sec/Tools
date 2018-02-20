@@ -67,6 +67,7 @@
 #*.RTF   diff=astextplain
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> hotspot/master
 =======
 >>>>>>> winsock/master
@@ -74,3 +75,6 @@
 =======
 >>>>>>> prime/master
 >>>>>>> PrimeFinder
+=======
+>>>>>>> adt/master
+>>>>>>> Easy-ADT

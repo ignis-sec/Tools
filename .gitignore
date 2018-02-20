@@ -13,6 +13,7 @@
 # Build results
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #[Dd]ebug/
 #[Dd]ebugPublic/
 #[Rr]elease/
@@ -26,6 +27,8 @@
 =======
 =======
 >>>>>>> PrimeFinder
+=======
+>>>>>>> Easy-ADT
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -37,9 +40,12 @@ bld/
 [Oo]bj/
 [Ll]og/
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> Winsock-File-Transfer
 =======
 >>>>>>> PrimeFinder
+=======
+>>>>>>> Easy-ADT
 
 # Visual Studio 2015 cache/options directory
 .vs/
