@@ -15,6 +15,7 @@ int main(int argc, char* argv[]) {
 	}
 	command.push_back(drive);
 	command.push_back(':');
+	command.append(" -ForceDismount");
 	c_command = command.c_str();
 	system(c_command);
 	system("PAUSE");
