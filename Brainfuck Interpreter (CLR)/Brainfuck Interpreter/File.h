@@ -86,8 +86,13 @@ std::ofstream* SaveFile() {
 
 		}
 	}
-	if (pszFilePath != nullptr) {
-		file->open(pszFilePath);
+	if (pszFilePath != nullptr) {	//if file doesnt have an extension add .bf
+		std::wstring name = pszFilePath;
+		if(name.find('.') == std::string::npos)
+		name += L".bf";
+		LPCWSTR fullFileName = name.c_str();
+		
+		file->open(fullFileName);
 		return file;
 	}
 
