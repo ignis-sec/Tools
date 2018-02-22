@@ -11,6 +11,23 @@ namespace BrainfuckInterpreter {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+
+	void FillTextBox(System::Windows::Forms::TextBox^  textBox,std::ifstream *Loaded)
+	{
+		std::string line;
+		String ^systemstring;
+		if (Loaded->is_open())
+		{
+			while (std::getline(*Loaded, line))
+			{
+				systemstring = gcnew String(line.c_str());
+				textBox->AppendText(systemstring);			///https://msdn.microsoft.com/en-us/library/ms235631.aspx
+
+			}
+			Loaded->close();
+		}
+	}
+
 	/// <summary>
 	/// Summary for Interpreter
 	/// </summary>
@@ -179,19 +196,10 @@ namespace BrainfuckInterpreter {
 	}
 	private: System::Void button6_Click(System::Object^  sender, System::EventArgs^  e) {
 		std::ifstream *Loaded = LoadFile();
-		std::string line;
-		String ^systemstring;
-		if (Loaded->is_open())
-		{
-			while (std::getline(*Loaded,line))
-			{
-				systemstring = gcnew String(line.c_str());
-				textBox1->AppendText(systemstring);			///https://msdn.microsoft.com/en-us/library/ms235631.aspx
-				 
-			}
-			Loaded->close();
-		}
+		if (Loaded!=nullptr)
+			FillTextBox(textBox1,Loaded);
 
 	}
+			
 };
 }

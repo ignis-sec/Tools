@@ -8,7 +8,8 @@
 std::ifstream* LoadFile()
 {
 
-	std::ifstream file;
+	std::ifstream *file;
+	file = new std::ifstream();
 	HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
 		COINIT_DISABLE_OLE1DDE);
 	PWSTR pszFilePath = NULL;
@@ -35,12 +36,14 @@ std::ifstream* LoadFile()
 			pItem->Release();
 		}
 	}
-	file.open(pszFilePath);
+	if(pszFilePath!=nullptr)
+		file->open(pszFilePath);
 
 
 
 	pFile->Release();
 	CoUninitialize();
-
-	return &file;
+	if (pszFilePath != nullptr)
+		return file;
+	else return NULL;
 }
