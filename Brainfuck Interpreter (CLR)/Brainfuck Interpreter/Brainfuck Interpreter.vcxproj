@@ -92,7 +92,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>ole32.lib</AdditionalDependencies>
       <EntryPointSymbol>main</EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -113,7 +113,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>ole32.lib</AdditionalDependencies>
       <EntryPointSymbol>main</EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -138,9 +138,19 @@
     <ClCompile Include="Interpreter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="File.h" />
     <ClInclude Include="Interpreter.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Interpreter.resx">
+      <DependentUpon>Interpreter.h</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Brainfuck Interpreter.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
