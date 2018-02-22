@@ -156,6 +156,9 @@
   <ItemGroup>
     <ResourceCompile Include="Brainfuck Interpreter.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Design\bf.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

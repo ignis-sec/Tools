@@ -50,6 +50,8 @@ namespace BrainfuckInterpreter {
 			//
 			//TODO: Add the constructor code here
 			//
+
+
 		}
 
 	protected:
@@ -73,6 +75,7 @@ namespace BrainfuckInterpreter {
 	private: System::Windows::Forms::Button^  button5;
 	private: System::Windows::Forms::Button^  button6;
 	private: System::Windows::Forms::Button^  button7;
+
 
 	private:
 		/// <summary>
@@ -210,8 +213,10 @@ namespace BrainfuckInterpreter {
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->textBox1);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"Interpreter";
 			this->Text = L"Interpreter";
+			this->Load += gcnew System::EventHandler(this, &Interpreter::Interpreter_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -237,5 +242,7 @@ namespace BrainfuckInterpreter {
 
 
 
-	};
+	private: System::Void Interpreter_Load(System::Object^  sender, System::EventArgs^  e) {
+	}
+};
 }
