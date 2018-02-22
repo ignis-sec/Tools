@@ -6,20 +6,20 @@
 class Interpreter {
 public:
 	Interpreter(Allocator *Alloc) {
-		m_loopBuffer = new char[150];
-		m_InputBuffer = new char[250];
-		m_codeArr = new char[250];
-		memAllocator = Alloc;
+		m_loopBuffer = new char[15];
+		m_InputBuffer = new char[25];
+		m_codeBuffer = new char[25];
+		memoryAllocator = Alloc;
 	}
 	int fillInputBuffer(char* input);
 	int allocateCodeBuffer(int size);
-	int runtime(std::string code);
+	int runtime(std::string *code);
 	void condenseCode();
-	void fillCodeBuffer(std::string);
+	void fillCodeBuffer(std::string *code);
 protected:
-	Allocator * memAllocator;
-	std::vector<char> m_codeBuffer;
-	char * m_codeArr;
+	Allocator * memoryAllocator;
+
+	char * m_codeBuffer;
 	char *m_loopBuffer;
 	char *m_InputBuffer;
 };
@@ -39,41 +39,51 @@ int Interpreter::allocateCodeBuffer(int size) {
 
 void Interpreter::condenseCode() {
 	int index = 0;
-	for (auto &c : m_codeBuffer)
+	for (int i=0;i<sizeof(m_codeBuffer);i++)
 	{
-		if (c != '+' ||
-			c != '-' ||
-			c != '>' ||
-			c != '<' ||
-			c != '[' ||
-			c != ']' ||
-			c != '.' ||
+		char c = m_codeBuffer[i];
+		if (c != '+' &&
+			c != '-' &&
+			c != '>' &&
+			c != '<' &&
+			c != '[' &&
+			c != ']' &&
+			c != '.' &&
 			c != ',') {
-			m_codeBuffer.erase(m_codeBuffer.begin() + index);
+			m_codeBuffer[i] = ' ';
 		}else index++;	
+	}
+	for (int i = 0; i < sizeof(m_codeBuffer); i++)
+	{
+		if (m_codeBuffer[i] == ' ')
+		{
+			for (int j = i; j < sizeof(m_codeBuffer) - 1; j++)
+				m_codeBuffer[j] = m_codeBuffer[j + 1];
+		}
 	}
 
 }
 
-int Interpreter::runtime(std::string code) {
+int Interpreter::runtime(std::string *code) {
 	fillCodeBuffer(code);
 	condenseCode();
 
-	for (auto c : m_codeBuffer)
+	for (int i = 0; i<sizeof(m_codeBuffer); i++)
 	{
+		char c = m_codeBuffer[i];
 		switch (c)
 		{
 		case '+':
-			memAllocator->ValueUp();
+			memoryAllocator->ValueUp();
 			break;
 		case '-':
-			memAllocator->ValueDown();
+			memoryAllocator->ValueDown();
 			break;
 		case '<':
-			memAllocator->MemoryUp();
+			memoryAllocator->MemoryDown();
 			break;
 		case '>':
-			memAllocator->MemoryDown();
+			memoryAllocator->MemoryUp();
 			break;
 		case '[':
 
@@ -90,16 +100,17 @@ int Interpreter::runtime(std::string code) {
 
 		}
 	}
-	*/
+	
 	return 0;
 }
 
-void Interpreter::fillCodeBuffer(std::string code) {
-	m_codeBuffer.clear();
-	strcpy(m_codeArr, code.c_str());
-	for (auto &c : code)
+void Interpreter::fillCodeBuffer(std::string *code) {
+	m_codeBuffer = new char[250];
+	//strcpy(m_codeArr, code->c_str());
+	for (int i=0;i<code->size();i++)
 	{
-		m_codeBuffer.push_back(c);
+		m_codeBuffer[i] = code->at(i);
 	}
+	m_codeBuffer[code->size()] = '\0';
 
 }

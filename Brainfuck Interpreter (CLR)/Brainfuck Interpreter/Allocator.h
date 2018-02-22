@@ -4,10 +4,10 @@
 
 class Allocator {
 public:
-	Allocator() {
-		m_memory = new char[3000];
-		m_index = 0;
+	Allocator(){
+		m_index = 1;
 		m_maxUsed = 1;
+		m_memory = new char[30];
 		}
 	int MemoryUp();		//>
 	int MemoryDown();	//<
@@ -22,7 +22,7 @@ public:
 protected:
 	int m_maxUsed;
 	char* m_memory;
-	unsigned int m_index;
+	unsigned int m_index=0;
 
 };
 
