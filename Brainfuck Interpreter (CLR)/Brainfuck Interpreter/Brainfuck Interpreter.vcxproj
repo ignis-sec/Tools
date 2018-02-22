@@ -147,6 +147,7 @@
     <ClInclude Include="IDEWindow.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Interpreter.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include "File.h"
 #include <string>
 #include "Allocator.h"
+#include "Interpreter.h"
 
 namespace BrainfuckInterpreter {
 
@@ -13,6 +14,11 @@ namespace BrainfuckInterpreter {
 	using namespace System::Drawing;
 
 	enum textmode { Output, Memory, Input };
+
+	//globals
+	textmode mode = Output;
+
+
 
 	void FillTextBox(System::Windows::Forms::TextBox^  textBox, std::ifstream *Loaded)
 	{
@@ -30,7 +36,7 @@ namespace BrainfuckInterpreter {
 			Loaded->close();
 		}
 	}
-	textmode mode = Output;
+
 	void FillFile(System::Windows::Forms::TextBox^ textBox, std::ofstream *Saved) {
 		const char* chars =										//Convert system string to char*
 			(const char*)(Runtime::InteropServices::Marshal::StringToHGlobalAnsi(textBox->Text)).ToPointer();
@@ -69,7 +75,7 @@ namespace BrainfuckInterpreter {
 			//
 			//TODO: Add the constructor code here
 			//
-			Allocator Allocator;
+			
 			
 
 		}
@@ -113,6 +119,9 @@ namespace BrainfuckInterpreter {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			Allocator memAllocator;
+			Interpreter bfInterpreter(&memAllocator);
+
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(IDEWindow::typeid));
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
@@ -323,6 +332,8 @@ private: System::Void button9_Click(System::Object^  sender, System::EventArgs^ 
 private: System::Void button10_Click(System::Object^  sender, System::EventArgs^  e) {
 	mode = Input;
 	ManageMode(textBox2);
+
+	
 }
 
 };

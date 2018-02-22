@@ -27,6 +27,9 @@
     <ClInclude Include="IDEWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Interpreter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Brainfuck Interpreter.rc">
@@ -45,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IDEWindow.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
