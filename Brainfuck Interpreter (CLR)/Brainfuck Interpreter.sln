@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Brainfuck Interpreter", "Brainfuck Interpreter\Brainfuck Interpreter.vcxproj", "{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Debug|x64.ActiveCfg = Debug|x64
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Debug|x64.Build.0 = Debug|x64
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Debug|x86.ActiveCfg = Debug|Win32
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Debug|x86.Build.0 = Debug|Win32
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Release|x64.ActiveCfg = Release|x64
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Release|x64.Build.0 = Release|x64
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Release|x86.ActiveCfg = Release|Win32
+		{069FBDBB-A095-42BD-B6FD-6AC9F3AC9497}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F81CDE4B-8C6D-4D85-A91F-3EA31E93FD16}
+	EndGlobalSection
+EndGlobal
