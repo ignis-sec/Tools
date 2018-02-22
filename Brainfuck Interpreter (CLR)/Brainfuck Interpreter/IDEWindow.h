@@ -17,8 +17,8 @@ namespace BrainfuckInterpreter {
 
 	//globals
 	textmode mode = Output;
-
-
+	Allocator *memAllocator;
+	Interpreter *bfInterpreter;
 
 	void FillTextBox(System::Windows::Forms::TextBox^  textBox, std::ifstream *Loaded)
 	{
@@ -36,12 +36,16 @@ namespace BrainfuckInterpreter {
 			Loaded->close();
 		}
 	}
+	std::string SysToChar(System::String ^sys) {
+		const char* chars =										//Convert system string to char*
+			(const char*)(Runtime::InteropServices::Marshal::StringToHGlobalAnsi(sys)).ToPointer();
+		
+		Runtime::InteropServices::Marshal::FreeHGlobal(IntPtr((void*)chars));
+		return chars;
+	}
 
 	void FillFile(System::Windows::Forms::TextBox^ textBox, std::ofstream *Saved) {
-		const char* chars =										//Convert system string to char*
-			(const char*)(Runtime::InteropServices::Marshal::StringToHGlobalAnsi(textBox->Text)).ToPointer();
-		std::string filecontent = chars;
-		Runtime::InteropServices::Marshal::FreeHGlobal(IntPtr((void*)chars));
+		std::string filecontent = SysToChar(textBox->Text);
 		*Saved << filecontent;
 		Saved->close();
 	}
@@ -71,14 +75,20 @@ namespace BrainfuckInterpreter {
 	public:
 		IDEWindow(void)
 		{
+
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
-			
+			Allocator alloc;
+			Interpreter interp(&alloc);
+
+			memAllocator = &alloc;
+			bfInterpreter = &interp;
 			
 
 		}
+;
 
 	protected:
 		/// <summary>
@@ -119,9 +129,6 @@ namespace BrainfuckInterpreter {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			Allocator memAllocator;
-			Interpreter bfInterpreter(&memAllocator);
-
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(IDEWindow::typeid));
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
@@ -179,6 +186,7 @@ namespace BrainfuckInterpreter {
 			this->button2->TabIndex = 3;
 			this->button2->TextImageRelation = System::Windows::Forms::TextImageRelation::TextBeforeImage;
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &IDEWindow::button2_Click);
 			// 
 			// button3
 			// 
@@ -332,9 +340,26 @@ private: System::Void button9_Click(System::Object^  sender, System::EventArgs^ 
 private: System::Void button10_Click(System::Object^  sender, System::EventArgs^  e) {
 	mode = Input;
 	ManageMode(textBox2);
-
 	
 }
 
+private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+	
+	int max = memAllocator->returnMax();
+	bfInterpreter->runtime(SysToChar(textBox1->Text));
+	
+	std::string memory;
+	textBox2->Clear();
+	
+	for (int i = 0; i < max; i++)
+	{
+		//char memorychar = memAllocator->getMemory(i);
+		//memory += memorychar;
+		memory += ' ';
+		
+	}
+	//System::String ^sysMem = gcnew String(memory.c_str());
+	//textBox2->AppendText(sysMem);
+}
 };
 }
