@@ -1,4 +1,4 @@
-#include "Interpreter.h"
+#include "IDEWindow.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -9,7 +9,7 @@ void main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 
-	BrainfuckInterpreter::Interpreter form;
+	BrainfuckInterpreter::IDEWindow form;
 	Application::Run(%form);
 
 

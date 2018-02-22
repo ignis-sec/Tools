@@ -139,18 +139,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Interpreter.cpp" />
+    <ClCompile Include="IDEWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Allocator.h" />
     <ClInclude Include="File.h" />
-    <ClInclude Include="Interpreter.h">
+    <ClInclude Include="IDEWindow.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Interpreter.resx">
-      <DependentUpon>Interpreter.h</DependentUpon>
+    <EmbeddedResource Include="IDEWindow.resx">
+      <DependentUpon>IDEWindow.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
