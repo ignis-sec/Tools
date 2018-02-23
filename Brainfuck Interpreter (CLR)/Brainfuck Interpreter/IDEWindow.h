@@ -177,6 +177,7 @@ namespace BrainfuckInterpreter {
 			this->button1->TabIndex = 2;
 			this->button1->TextImageRelation = System::Windows::Forms::TextImageRelation::TextBeforeImage;
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &IDEWindow::button1_Click);
 			// 
 			// button2
 			// 
@@ -198,6 +199,7 @@ namespace BrainfuckInterpreter {
 			this->button3->TabIndex = 4;
 			this->button3->TextImageRelation = System::Windows::Forms::TextImageRelation::TextBeforeImage;
 			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &IDEWindow::button3_Click);
 			// 
 			// button4
 			// 
@@ -383,6 +385,43 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 
 
 }
+		 Allocator * debugAlloc;
+		 Interpreter* debugInter;
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	static Allocator memAllocator;
+	debugAlloc = &memAllocator;
 
+	static Interpreter bfInterpreter(&memAllocator);
+	debugInter = &bfInterpreter;
+	bfInterpreter.fillInputBuffer(&SysToChar(textBox3->Text));
+
+	bfInterpreter.runMainStep(&SysToChar(textBox1->Text));
+
+	int max = memAllocator.returnMax() + 1;
+
+
+	std::string memory;
+	textBox2->Clear();
+	int memorychar;
+
+	for (int i = 0; i < max; i++)
+	{
+		memorychar = memAllocator.getMemory(i);
+		System::String ^sysMem = System::Convert::ToString(memorychar);
+		textBox2->AppendText(sysMem);
+		textBox2->AppendText(L" ");
+	}
+	System::String ^sysOut = gcnew String((bfInterpreter.getOutput()->c_str()));
+	textBox4->Clear();
+	textBox4->AppendText(sysOut);
+
+
+}
+private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+	debugAlloc->terminate();
+	debugInter->terminate();
+	textBox3->Clear();
+	textBox2->Clear();
+}
 };
 }
