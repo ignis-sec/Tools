@@ -6,19 +6,20 @@ class Allocator {
 public:
 	Allocator(){
 		m_index = 0;
-		m_maxUsed = 1;
+		m_maxUsed = 0;
 		m_memory = new char[30];
 		m_memory = (char*)calloc(30, sizeof(char));
 		}
-	int MemoryUp();		//>
-	int MemoryDown();	//<
-	int ValueUp();		//+
-	int ValueDown();	//-
-	int returnMax() { return m_maxUsed; }
-	char getMemory(int index){
+	int MemoryUp();				//>
+	int MemoryDown();			//<
+	int ValueUp();				//+
+	int ValueDown();			//-
+	int setMemory(int input);	//,
+	char getCurrentMemory();	//.
+	char getMemory(int index){	
 		return m_memory[index];
 	}
-
+	int returnMax() { return m_maxUsed; }
 
 protected:
 	int m_maxUsed;
@@ -48,8 +49,19 @@ int Allocator::ValueUp() {
 }
 int Allocator::ValueDown() {
 	if (m_memory[m_index] > 0) {
-		m_memory[m_index]++;
+		m_memory[m_index]--;
 		return 0;
 	}
 	return 1;
+}
+
+int Allocator::setMemory(int input)
+{
+	m_memory[m_index] = input;
+	return 0;
+}
+
+char Allocator::getCurrentMemory()
+{
+	return m_memory[m_index];
 }

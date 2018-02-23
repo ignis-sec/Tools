@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-
+#include <sstream>
 
 class Interpreter {
 public:
@@ -9,28 +9,52 @@ public:
 		m_loopBuffer = new char[15];
 		m_InputBuffer = new char[25];
 		m_codeBuffer = new char[25];
+		m_InputArray = new int[25];
+		m_outputBuffer = new char[25];
+		m_outputBuffer = (char*)calloc(25, sizeof(char));
 		memoryAllocator = Alloc;
+		bForward = true;
+		m_inputIndex = 0;
+	
 	}
-	int fillInputBuffer(char* input);
+	int fillInputBuffer(std::string* input);
 	int allocateCodeBuffer(int size);
 	int runtime(std::string *code);
 	void condenseCode();
 	void fillCodeBuffer(std::string *code);
+	std::string* getOutput() { return &m_outputBuffer; }
+
+	std::string m_outputBuffer;
 protected:
 	Allocator * memoryAllocator;
-
+	bool bForward;
 	char * m_codeBuffer;
 	char *m_loopBuffer;
 	char *m_InputBuffer;
+
+	int *m_InputArray;
+	int m_inputIndex;
+	int m_inputMax;
 };
 
-int Interpreter::fillInputBuffer(char* input)
+int Interpreter::fillInputBuffer(std::string* input)
 {
-	if (sizeof(input) <= 250) {
-		strcpy(m_InputBuffer, input);
-		return 0;
+	const char* CInput = input->c_str();
+	std::stringstream Istrm(CInput);
+	strcpy(m_InputBuffer, CInput);
+	int i=0;
+	std::string segment;
+	int intput;
+	while (std::getline(Istrm, segment, ' '))
+	{
+		if(segment[0]>=48 && segment[0]<=57)
+			intput = std::stoi(segment);
+		else intput = segment[0];
+		m_InputArray[i] = intput;
+		i++;
 	}
-	else return 1;
+	m_inputMax = i;
+	return 0;
 }
 
 int Interpreter::allocateCodeBuffer(int size) {
@@ -92,10 +116,12 @@ int Interpreter::runtime(std::string *code) {
 
 			break;
 		case '.':
-
+			m_outputBuffer += std::to_string(memoryAllocator->getCurrentMemory());
+			m_outputBuffer += " ";
 			break;
 		case ',':
-
+			memoryAllocator->setMemory(m_InputArray[m_inputIndex]);
+			m_inputIndex++;
 			break;
 
 		}
