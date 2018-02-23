@@ -107,10 +107,11 @@ namespace BrainfuckInterpreter {
 	private: System::Windows::Forms::Button^  button5;
 	private: System::Windows::Forms::Button^  button6;
 	private: System::Windows::Forms::Button^  button7;
-	private: System::Windows::Forms::Button^  button8;
-	private: System::Windows::Forms::Button^  button9;
+
+
 	private: System::Windows::Forms::TextBox^  textBox3;
 	private: System::Windows::Forms::TextBox^  textBox4;
+	private: System::Windows::Forms::TextBox^  textBox5;
 
 
 
@@ -137,10 +138,9 @@ namespace BrainfuckInterpreter {
 			this->button5 = (gcnew System::Windows::Forms::Button());
 			this->button6 = (gcnew System::Windows::Forms::Button());
 			this->button7 = (gcnew System::Windows::Forms::Button());
-			this->button8 = (gcnew System::Windows::Forms::Button());
-			this->button9 = (gcnew System::Windows::Forms::Button());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// textBox1
@@ -246,30 +246,6 @@ namespace BrainfuckInterpreter {
 			this->button7->UseVisualStyleBackColor = true;
 			this->button7->Click += gcnew System::EventHandler(this, &IDEWindow::button7_Click);
 			// 
-			// button8
-			// 
-			this->button8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button8.Image")));
-			this->button8->Location = System::Drawing::Point(511, 728);
-			this->button8->Name = L"button8";
-			this->button8->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->button8->Size = System::Drawing::Size(79, 79);
-			this->button8->TabIndex = 9;
-			this->button8->TextImageRelation = System::Windows::Forms::TextImageRelation::TextBeforeImage;
-			this->button8->UseVisualStyleBackColor = true;
-			this->button8->Click += gcnew System::EventHandler(this, &IDEWindow::button8_Click);
-			// 
-			// button9
-			// 
-			this->button9->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button9.Image")));
-			this->button9->Location = System::Drawing::Point(596, 728);
-			this->button9->Name = L"button9";
-			this->button9->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->button9->Size = System::Drawing::Size(79, 79);
-			this->button9->TabIndex = 10;
-			this->button9->TextImageRelation = System::Windows::Forms::TextImageRelation::TextBeforeImage;
-			this->button9->UseVisualStyleBackColor = true;
-			this->button9->Click += gcnew System::EventHandler(this, &IDEWindow::button9_Click);
-			// 
 			// textBox3
 			// 
 			this->textBox3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
@@ -288,18 +264,28 @@ namespace BrainfuckInterpreter {
 			this->textBox4->Multiline = true;
 			this->textBox4->Name = L"textBox4";
 			this->textBox4->ReadOnly = true;
-			this->textBox4->Size = System::Drawing::Size(1141, 94);
+			this->textBox4->Size = System::Drawing::Size(572, 94);
 			this->textBox4->TabIndex = 13;
+			// 
+			// textBox5
+			// 
+			this->textBox5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(162)));
+			this->textBox5->Location = System::Drawing::Point(590, 905);
+			this->textBox5->Multiline = true;
+			this->textBox5->Name = L"textBox5";
+			this->textBox5->ReadOnly = true;
+			this->textBox5->Size = System::Drawing::Size(563, 94);
+			this->textBox5->TabIndex = 14;
 			// 
 			// IDEWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1450, 1011);
+			this->Controls->Add(this->textBox5);
 			this->Controls->Add(this->textBox4);
 			this->Controls->Add(this->textBox3);
-			this->Controls->Add(this->button9);
-			this->Controls->Add(this->button8);
 			this->Controls->Add(this->button7);
 			this->Controls->Add(this->button6);
 			this->Controls->Add(this->button5);
@@ -395,10 +381,9 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 	debugInter = &bfInterpreter;
 	bfInterpreter.fillInputBuffer(&SysToChar(textBox3->Text));
 
-	bfInterpreter.runMainStep(&SysToChar(textBox1->Text));
+	bfInterpreter.runStep(&SysToChar(textBox1->Text));
 
 	int max = memAllocator.returnMax() + 1;
-
 
 	std::string memory;
 	textBox2->Clear();
@@ -415,6 +400,9 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 	textBox4->Clear();
 	textBox4->AppendText(sysOut);
 
+	System::String ^sysOutStr = gcnew String((bfInterpreter.getStredOutput()->c_str()));
+	textBox5->Clear();
+	textBox5->AppendText(sysOutStr);
 
 }
 private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
