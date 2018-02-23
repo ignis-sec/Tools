@@ -158,6 +158,8 @@ namespace BrainfuckInterpreter {
 			// 
 			// textBox2
 			// 
+			this->textBox2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(162)));
 			this->textBox2->Location = System::Drawing::Point(12, 813);
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
@@ -278,6 +280,8 @@ namespace BrainfuckInterpreter {
 			// 
 			// textBox4
 			// 
+			this->textBox4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(162)));
 			this->textBox4->Location = System::Drawing::Point(12, 905);
 			this->textBox4->Multiline = true;
 			this->textBox4->Name = L"textBox4";
