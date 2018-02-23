@@ -10,6 +10,10 @@ public:
 		m_memory = new char[30];
 		m_memory = (char*)calloc(30, sizeof(char));
 		}
+
+	~Allocator() {
+		free(m_memory);
+	}
 	int MemoryUp();				//>
 	int MemoryDown();			//<
 	int ValueUp();				//+
@@ -20,6 +24,7 @@ public:
 		return m_memory[index];
 	}
 	int returnMax() { return m_maxUsed; }
+	void terminate() { delete this; }
 
 protected:
 	int m_maxUsed;

@@ -10,12 +10,17 @@ public:
 		m_InputBuffer = new char[25];
 		m_codeBuffer = new char[25];
 		m_InputArray = new int[25];
-		m_outputBuffer = new char[25];
-		m_outputBuffer = (char*)calloc(25, sizeof(char));
 		memoryAllocator = Alloc;
 		bForward = true;
 		m_inputIndex = 0;
+		m_step = 0;
 	
+	}
+	~Interpreter() { 
+		free(m_loopBuffer);
+		free(m_InputBuffer);
+		free(m_codeBuffer);
+		free(m_InputArray);
 	}
 	int fillInputBuffer(std::string* input);
 	int allocateCodeBuffer(int size);
@@ -23,6 +28,12 @@ public:
 	void condenseCode();
 	void fillCodeBuffer(std::string *code);
 	std::string* getOutput() { return &m_outputBuffer; }
+	int runStep(std::string *code);
+	int runMainStep(std::string *code);
+
+
+	void terminate() { delete this; }
+
 
 	std::string m_outputBuffer;
 protected:
@@ -32,6 +43,7 @@ protected:
 	char *m_loopBuffer;
 	char *m_InputBuffer;
 
+	int m_step;
 	int *m_InputArray;
 	int m_inputIndex;
 	int m_inputMax;
@@ -139,4 +151,48 @@ void Interpreter::fillCodeBuffer(std::string *code) {
 	}
 	m_codeBuffer[code->size()] = '\0';
 
+}
+int Interpreter::runMainStep(std::string *code) {
+	fillCodeBuffer(code);
+	condenseCode();
+	runStep(code);
+	return 0;
+}
+
+int Interpreter::runStep(std::string *code) {
+
+	char c = m_codeBuffer[m_step];
+	switch (c)
+	{
+	case '+':
+		memoryAllocator->ValueUp();
+		break;
+	case '-':
+		memoryAllocator->ValueDown();
+		break;
+	case '<':
+		memoryAllocator->MemoryDown();
+		break;
+	case '>':
+		memoryAllocator->MemoryUp();
+		break;
+	case '[':
+
+		break;
+	case ']':
+
+		break;
+	case '.':
+		m_outputBuffer += std::to_string(memoryAllocator->getCurrentMemory());
+		m_outputBuffer += " ";
+		break;
+	case ',':
+		memoryAllocator->setMemory(m_InputArray[m_inputIndex]);
+		m_inputIndex++;
+		break;
+
+	}
+	
+	m_step++;
+	return 0;
 }
