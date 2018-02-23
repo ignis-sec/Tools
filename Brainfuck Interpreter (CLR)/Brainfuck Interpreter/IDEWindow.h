@@ -368,6 +368,9 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 	textBox4->Clear();
 	textBox4->AppendText(sysOut);
 
+	System::String ^sysOutStr = gcnew String((bfInterpreter->getStredOutput()->c_str()));
+	textBox5->Clear();
+	textBox5->AppendText(sysOutStr);
 
 
 }

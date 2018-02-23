@@ -167,7 +167,7 @@ void Interpreter::ExecuteCommand(char c,int i) {
 	case '.':
 		m_outputBuffer += std::to_string(memoryAllocator->getCurrentMemory());
 		m_outputBuffer += " ";
-		m_outputStringBuffer += (char)memoryAllocator->getCurrentMemory();
+		m_outputStringBuffer += memoryAllocator->getCurrentMemory();
 		m_outputStringBuffer += " ";
 		break;
 	case ',':
