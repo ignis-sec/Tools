@@ -13,59 +13,57 @@ namespace BrainfuckInterpreter {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	enum textmode { Output, Memory, Input };
+	
+	enum textmode { Output, Memory, Input }; ///DEPRECATED
 
 	//globals
 	textmode mode = Output;
-
+	bool debugOn = false;
 
 	void FillTextBox(System::Windows::Forms::TextBox^  textBox, std::ifstream *Loaded)
-	{
+	{//This function fills the Textbox with stream loaded from file
 		std::string line;
 		String ^systemstring;
-		if (Loaded->is_open())
+		if (Loaded->is_open())	
 		{
-			textBox->Clear();
-			while (std::getline(*Loaded, line))
+			textBox->Clear();	
+			while (std::getline(*Loaded, line))	//read line by line
 			{
-				systemstring = gcnew String(line.c_str());
+				systemstring = gcnew String(line.c_str());	//and construct System::String from c_str()
 				textBox->AppendText(systemstring);			///https://msdn.microsoft.com/en-us/library/ms235631.aspx
-
 			}
 			Loaded->close();
 		}
 	}
-	std::string SysToChar(System::String ^sys) {
-		
+
+	std::string SysToChar(System::String ^sys) {//This function converts System::String to std::string	
 		char* str2 = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(sys);
 		std::string str3(str2);
 		return str3;
-		
-
 	}
 
-	void FillFile(System::Windows::Forms::TextBox^ textBox, std::ofstream *Saved) {
+	void FillFile(System::Windows::Forms::TextBox^ textBox, std::ofstream *Saved) {//This function fills save file selected from fileSaveDialog with textBox
 		std::string filecontent = SysToChar(textBox->Text);
 		*Saved << filecontent;
 		Saved->close();
 	}
 
-	void ManageMode(System::Windows::Forms::TextBox^ textBox) {
-		switch (mode)
-		{
-		case Output:
-			textBox->ReadOnly = true;
-			break;
-
-		case Memory:
-			textBox->ReadOnly = true;
-			break;
-
-		case Input:
-			textBox->ReadOnly = false;
-			break;
-		}
-	}
+	void ManageMode(System::Windows::Forms::TextBox^ textBox) { ///DEPRECATED
+		switch (mode)											//
+		{														//
+		case Output:											//
+			textBox->ReadOnly = true;							//
+			break;												//
+																//
+		case Memory:											//
+			textBox->ReadOnly = true;							//
+			break;												//
+																//
+		case Input:												//
+			textBox->ReadOnly = false;							//
+			break;												//
+		}														//
+	}															//
 
 	/// <summary>
 	/// Summary for IDE Window
@@ -166,7 +164,6 @@ namespace BrainfuckInterpreter {
 			this->textBox2->ReadOnly = true;
 			this->textBox2->Size = System::Drawing::Size(1141, 86);
 			this->textBox2->TabIndex = 1;
-			this->textBox2->TextChanged += gcnew System::EventHandler(this, &IDEWindow::textBox2_TextChanged);
 			// 
 			// button1
 			// 
@@ -303,113 +300,97 @@ namespace BrainfuckInterpreter {
 
 		}
 #pragma endregion
-	private: System::Void textBox2_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-
-	}
-
-
-
 	private: System::Void button6_Click(System::Object^  sender, System::EventArgs^  e) {
-		std::ifstream *Loaded = LoadFile();
+		std::ifstream *Loaded = LoadFile();		//This is the button responsible of constructing open file dialog
 		if (Loaded != nullptr)
 			FillTextBox(textBox1, Loaded);
 	}
 
 	private: System::Void button7_Click(System::Object^  sender, System::EventArgs^  e) {
-
-		std::ofstream *Saved = SaveFile();
+		std::ofstream *Saved = SaveFile();		//This is the button responsible of constructing save file dialog
 		if (Saved != nullptr)
-			FillFile(textBox1, Saved);
-		
+			FillFile(textBox1, Saved);	
 	}
 
-
-
-
-
-private: System::Void button8_Click(System::Object^  sender, System::EventArgs^  e) {
-
-	mode = Output;
-	ManageMode(textBox2);
-}
-private: System::Void button9_Click(System::Object^  sender, System::EventArgs^  e) {
-	mode = Memory;
-	ManageMode(textBox2);
-}
-private: System::Void button10_Click(System::Object^  sender, System::EventArgs^  e) {
-	mode = Input;
-	ManageMode(textBox2);
-	
-}
-
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	
+												//Run program Button
 	Allocator *memAllocator = new Allocator;
-
 	Interpreter *bfInterpreter = new Interpreter(memAllocator);
-	bfInterpreter->fillInputBuffer(&SysToChar(textBox3->Text));
-	bfInterpreter->runtime(&SysToChar(textBox1->Text));
 
-	int max = memAllocator->returnMax()+1;
+	bfInterpreter->fillInputBuffer(&SysToChar(textBox3->Text));	//fill interpreters input buffer with the text in the codebox
+	bfInterpreter->runtime(&SysToChar(textBox1->Text));			//Interpreter::runtime contains vital functions responsible of interperation
+
+	int max = memAllocator->returnMax()+1;						//get maximum number of cells used from Allocator so it can limit the memory browser output
 	
 	
-	std::string memory;
+	std::string memory;				
 	textBox2->Clear();
 	int memorychar;
 	
-	for (int i = 0; i < max; i++)
+	for (int i = 0; i < max; i++)//for every cell in memory...
 	{
-		memorychar = memAllocator->getMemory(i);
-		System::String ^sysMem = System::Convert::ToString(memorychar);
-		textBox2->AppendText(sysMem);
-		textBox2->AppendText(L" ");
+		memorychar = memAllocator->getMemory(i);//...get the memory value...
+		System::String ^sysMem = System::Convert::ToString(memorychar); //...convert it to System::String...
+		textBox2->AppendText(sysMem);	//...append to the text box...
+		textBox2->AppendText(L" ");		//...and append whitespace.
 	}
-	System::String ^sysOut =gcnew String((bfInterpreter->getOutput()->c_str()));
+	System::String ^sysOut =gcnew String((bfInterpreter->getOutput()->c_str()));//getOutput returns output of the run in integer form
 	textBox4->Clear();
 	textBox4->AppendText(sysOut);
 
+	System::String ^sysOutStr = gcnew String((bfInterpreter->getStredOutput()->c_str()));//getStredOutput returns output of the run in char form
+	textBox5->Clear();
+	textBox5->AppendText(sysOutStr);
 
 
 }
-		 Allocator * debugAlloc;
-		 Interpreter* debugInter;
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	static Allocator memAllocator;
-	debugAlloc = &memAllocator;
 
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+											//Debug Program Button
+	static Allocator memAllocator;			//staticly defined so they are not lost every time next step is clicked
 	static Interpreter bfInterpreter(&memAllocator);
-	debugInter = &bfInterpreter;
 	bfInterpreter.fillInputBuffer(&SysToChar(textBox3->Text));
 
+<<<<<<< HEAD
 	bfInterpreter.runStep(&SysToChar(textBox1->Text));
 
 	int max = memAllocator.returnMax() + 1;
 
+=======
+	bfInterpreter.runStep(&SysToChar(textBox1->Text));	//run step function only interperets 1 char from the input
+
+	int max = memAllocator.returnMax() + 1;	//get maximum number of cells used from Allocator so it can limit the memory browser output
+
+>>>>>>> Brainfuck-Interpreter
 	std::string memory;
 	textBox2->Clear();
 	int memorychar;
 
-	for (int i = 0; i < max; i++)
+	for (int i = 0; i < max; i++)//for every cell...
 	{
-		memorychar = memAllocator.getMemory(i);
-		System::String ^sysMem = System::Convert::ToString(memorychar);
-		textBox2->AppendText(sysMem);
-		textBox2->AppendText(L" ");
+		memorychar = memAllocator.getMemory(i);//...get the memory value...
+		System::String ^sysMem = System::Convert::ToString(memorychar); //...convert it to System::String...
+		textBox2->AppendText(sysMem);	//...append to the text box...
+		textBox2->AppendText(L" ");		//...and append whitespace.
 	}
-	System::String ^sysOut = gcnew String((bfInterpreter.getOutput()->c_str()));
+	System::String ^sysOut = gcnew String((bfInterpreter.getOutput()->c_str()));//getOutput returns output of the run in integer form
 	textBox4->Clear();
 	textBox4->AppendText(sysOut);
 
+<<<<<<< HEAD
 	System::String ^sysOutStr = gcnew String((bfInterpreter.getStredOutput()->c_str()));
+=======
+	System::String ^sysOutStr = gcnew String((bfInterpreter.getStredOutput()->c_str()));//getStredOutput returns output of the run in char form
+>>>>>>> Brainfuck-Interpreter
 	textBox5->Clear();
 	textBox5->AppendText(sysOutStr);
 
 }
 private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-	debugAlloc->terminate();
-	debugInter->terminate();
+												//End Debug Session button which does not work
 	textBox3->Clear();
 	textBox2->Clear();
+	debugOn = false;
 }
 };
 }
