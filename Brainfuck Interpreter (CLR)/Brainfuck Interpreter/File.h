@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <Shobjidl.h>
 
-std::ifstream* LoadFile()
+std::ifstream* LoadFile()	//this function constructs file load dialog
 {
 
 	std::ifstream *file;
@@ -44,12 +44,12 @@ std::ifstream* LoadFile()
 	pFile->Release();
 	CoUninitialize();
 	if (pszFilePath != nullptr)
-		return file;
+		return file; //returns selected files path/name
 	else return NULL;
 }
 
 
-std::ofstream* SaveFile() {
+std::ofstream* SaveFile() {//this function constructs file save dialog
 
 	std::ofstream *file;
 	file = new std::ofstream();
@@ -65,7 +65,7 @@ std::ofstream* SaveFile() {
 	{
 		COMDLG_FILTERSPEC rgSpec[] =
 		{
-			{ L"Brainfuck file", L"*.bf" },
+			{ L"Brainfuck file", L"*.bf" }, //filter for file types
 		{ L"All Files", L"*.*" },
 		};
 		// Show the Open dialog box.
