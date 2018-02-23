@@ -3,11 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <stack>
-<<<<<<< HEAD
-#define MAX_BF_BUF 250
-=======
 #define MAX_BF_BUF 4096
->>>>>>> Brainfuck-Interpreter
 class Interpreter {
 public:
 	Interpreter(Allocator *Alloc) {
@@ -30,29 +26,6 @@ public:
 	std::string* getOutput() { return &m_outputBuffer; }
 	std::string* getStredOutput() { return &m_outputStringBuffer; }
 	int runStep(std::string *code);
-<<<<<<< HEAD
-	void ExecuteCommand(char c, int i);
-
-
-	void terminate() { delete this; }
-
-	std::string m_outputBuffer;
-	std::string m_outputStringBuffer;
-
-protected:
-	Allocator * memoryAllocator;
-	bool bForward;
-	char * m_codeBuffer;
-	char *m_loopBuffer;
-	char *m_InputBuffer;
-
-	int m_step;
-	int *m_InputArray;
-	int m_inputIndex;
-	int m_inputMax;
-	
-	std::stack<int> m_loopStack;
-=======
 	void ExecuteCommand(char c, int *i);
 	void terminate() { delete this; }	//delet dis
 
@@ -69,7 +42,6 @@ protected:
 	bool m_skipFlag = false;	// if [ is read while data pointer is at 0, we have to skip the loop. This flag is turned to true
 								//when situation mentioned above exists. interperation is stopped until a ] is found
 	std::stack<int> m_loopStack;//used for nested loops
->>>>>>> Brainfuck-Interpreter
 };
 
 int Interpreter::fillInputBuffer(std::string* input)//this function fills the input buffer with textbox content
@@ -126,32 +98,6 @@ int Interpreter::runtime(std::string *code) {//main runtime frame
 	for (int i = 0; i < MAX_BF_BUF; i++) ///TODO dynamic code buffer size check
 	{
 		char c = m_codeBuffer[i];
-<<<<<<< HEAD
-		ExecuteCommand(c,i);
-	}
-	
-	return 0;
-}
-
-void Interpreter::fillCodeBuffer(std::string *code) {
-	m_codeBuffer = new char[250];
-	//strcpy(m_codeArr, code->c_str());
-	for (int i=0;i<code->size();i++)
-	{
-		m_codeBuffer[i] = code->at(i);
-	}
-	m_codeBuffer[code->size()] = '\0';
-
-}
-
-int Interpreter::runStep(std::string *code) {
-
-	fillCodeBuffer(code);
-	condenseCode();
-	char c = m_codeBuffer[m_step];
-	ExecuteCommand(c,m_step);
-	
-=======
 		ExecuteCommand(c, &i);
 	}
 
@@ -176,50 +122,10 @@ int Interpreter::runStep(std::string *code) {//executes only the current step
 	char c = m_codeBuffer[m_step];
 	ExecuteCommand(c, &m_step);
 
->>>>>>> Brainfuck-Interpreter
 	m_step++;
 	return 0;
 }
 
-<<<<<<< HEAD
-void Interpreter::ExecuteCommand(char c,int i) {
-	switch (c)
-	{
-	case '+':
-		memoryAllocator->ValueUp();
-		break;
-	case '-':
-		memoryAllocator->ValueDown();
-		break;
-	case '<':
-		memoryAllocator->MemoryDown();
-		break;
-	case '>':
-		memoryAllocator->MemoryUp();
-		break;
-	case '[':
-		m_loopStack.push(i);
-		break;
-	case ']':
-		if (memoryAllocator->getCurrentMemory() != 0)
-		{
-			i = m_loopStack.top();
-		}
-		else m_loopStack.pop();
-		break;
-	case '.':
-		m_outputBuffer += std::to_string(memoryAllocator->getCurrentMemory());
-		m_outputBuffer += " ";
-		m_outputStringBuffer += (char)memoryAllocator->getCurrentMemory();
-		m_outputStringBuffer += " ";
-		break;
-	case ',':
-		memoryAllocator->setMemory(m_InputArray[m_inputIndex]);
-		m_inputIndex++;
-		break;
-
-	}
-=======
 void Interpreter::ExecuteCommand(char c, int *i) {
 
 	if (!m_skipFlag)//use of this flag is explained at line 42
@@ -262,5 +168,4 @@ void Interpreter::ExecuteCommand(char c, int *i) {
 
 		}
 	else if (c == ']') m_skipFlag = false;	//if flag is true only check for ], if it is ] set flag to false, if not dont care
->>>>>>> Brainfuck-Interpreter
 }

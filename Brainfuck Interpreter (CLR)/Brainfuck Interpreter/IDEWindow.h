@@ -351,17 +351,10 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 	static Interpreter bfInterpreter(&memAllocator);
 	bfInterpreter.fillInputBuffer(&SysToChar(textBox3->Text));
 
-<<<<<<< HEAD
-	bfInterpreter.runStep(&SysToChar(textBox1->Text));
-
-	int max = memAllocator.returnMax() + 1;
-
-=======
 	bfInterpreter.runStep(&SysToChar(textBox1->Text));	//run step function only interperets 1 char from the input
 
 	int max = memAllocator.returnMax() + 1;	//get maximum number of cells used from Allocator so it can limit the memory browser output
 
->>>>>>> Brainfuck-Interpreter
 	std::string memory;
 	textBox2->Clear();
 	int memorychar;
@@ -377,11 +370,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 	textBox4->Clear();
 	textBox4->AppendText(sysOut);
 
-<<<<<<< HEAD
-	System::String ^sysOutStr = gcnew String((bfInterpreter.getStredOutput()->c_str()));
-=======
 	System::String ^sysOutStr = gcnew String((bfInterpreter.getStredOutput()->c_str()));//getStredOutput returns output of the run in char form
->>>>>>> Brainfuck-Interpreter
 	textBox5->Clear();
 	textBox5->AppendText(sysOutStr);
 

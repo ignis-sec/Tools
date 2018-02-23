@@ -1,10 +1,6 @@
 #pragma once
 
-<<<<<<< HEAD
-#define MAX_MEM_BUF 300
-=======
 #define MAX_MEM_BUF 4096
->>>>>>> Brainfuck-Interpreter
 
 class Allocator {
 public:
@@ -12,11 +8,7 @@ public:
 		m_dataPointerIndex = 0;
 		m_maxUsed = 0;
 		m_memory = new char[MAX_MEM_BUF];
-<<<<<<< HEAD
-		m_memory = (char*)calloc(30, sizeof(char));
-=======
 		m_memory = (char*)calloc(MAX_MEM_BUF, sizeof(char));
->>>>>>> Brainfuck-Interpreter
 		}
 	~Allocator() {
 		free(m_memory);
@@ -28,13 +20,8 @@ public:
 	int ValueDown();			//-
 	int setMemory(int input);	//,
 	char getCurrentMemory();	//.
-<<<<<<< HEAD
-	int getIndex(){ return m_index; }
-	char getMemory(int index){	
-=======
 
 	char getMemory(int index){	//used for printing memory to the textbox
->>>>>>> Brainfuck-Interpreter
 		return m_memory[index];
 	}
 
