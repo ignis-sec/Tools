@@ -68,7 +68,7 @@ int Interpreter::runtime(std::string *code) {
 	fillCodeBuffer(code);
 	condenseCode();
 
-	for (int i = 0; i<sizeof(m_codeBuffer); i++)
+	for (int i = 0; i<150; i++) ///TODO dynamic code buffer size check
 	{
 		char c = m_codeBuffer[i];
 		switch (c)

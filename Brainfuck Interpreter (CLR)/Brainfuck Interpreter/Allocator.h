@@ -5,9 +5,10 @@
 class Allocator {
 public:
 	Allocator(){
-		m_index = 1;
+		m_index = 0;
 		m_maxUsed = 1;
 		m_memory = new char[30];
+		m_memory = (char*)calloc(30, sizeof(char));
 		}
 	int MemoryUp();		//>
 	int MemoryDown();	//<

@@ -17,8 +17,7 @@ namespace BrainfuckInterpreter {
 
 	//globals
 	textmode mode = Output;
-	Interpreter *bfInterpreter;
-	Allocator *memAllocator;
+
 
 	void FillTextBox(System::Windows::Forms::TextBox^  textBox, std::ifstream *Loaded)
 	{
@@ -126,10 +125,7 @@ namespace BrainfuckInterpreter {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			Allocator alloc;
-			memAllocator = &alloc;
-			Interpreter interp(memAllocator);
-			bfInterpreter = &interp;
+
 
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(IDEWindow::typeid));
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
@@ -347,21 +343,25 @@ private: System::Void button10_Click(System::Object^  sender, System::EventArgs^
 
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 	
-	int max = memAllocator->returnMax();
-	bfInterpreter->runtime(&SysToChar(textBox1->Text));
-	
+	Allocator memAllocator;
+
+	Interpreter bfInterpreter(&memAllocator);
+
+
+
+	bfInterpreter.runtime(&SysToChar(textBox1->Text));
+	int max = memAllocator.returnMax();
 	std::string memory;
 	textBox2->Clear();
-	
-	for (int i = 0; i < 15; i++)
+	int memorychar;
+	for (int i = 0; i < max; i++)
 	{
-		//char memorychar = memAllocator->getMemory(i);
-		//memory += memorychar;
-		memory += ' ';
-		
+		memorychar = memAllocator.getMemory(i);
+		System::String ^sysMem = System::Convert::ToString(memorychar);
+		textBox2->AppendText(sysMem);
+		textBox2->AppendText(L" ");
 	}
-	//System::String ^sysMem = gcnew String(memory.c_str());
-	//textBox2->AppendText(sysMem);
+
 }
 };
 }
