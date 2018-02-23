@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
 
+#define MAX_MEM_BUF 300
 
 class Allocator {
 public:
 	Allocator(){
 		m_index = 0;
 		m_maxUsed = 0;
-		m_memory = new char[30];
+		m_memory = new char[MAX_MEM_BUF];
 		m_memory = (char*)calloc(30, sizeof(char));
 		}
 
@@ -20,6 +21,7 @@ public:
 	int ValueDown();			//-
 	int setMemory(int input);	//,
 	char getCurrentMemory();	//.
+	int getIndex(){ return m_index; }
 	char getMemory(int index){	
 		return m_memory[index];
 	}
